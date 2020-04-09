@@ -108,7 +108,7 @@ public class Client {
 
       if (this.printSplash = true);
       {
-        System.out.print(helper.formatSplash(this.user));
+        System.out.print(helper.helloUser(this.user));
       }
       loop(helper, reader);
     } catch (Exception ex) {

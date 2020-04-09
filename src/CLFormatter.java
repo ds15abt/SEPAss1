@@ -29,7 +29,7 @@ public class CLFormatter {
 
   /* Following are the auxiliary methods for formatting the UI text */
 
-  static String formatSplash(String user) {
+  static String helloUser(String user) {
     return "\nHello " + user + "!\n"
         + "Note:  Commands can be abbreviated to any prefix, "
         + "e.g., fe [mytopic].\n";
