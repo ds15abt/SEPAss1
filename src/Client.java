@@ -71,7 +71,11 @@ public class Client {
 
   boolean printSplash = true;
 
-  Client() {
+  public Client() {
+      
+      
+      
+      
   }
 
   public static void main(String[] args) throws IOException {
@@ -92,7 +96,7 @@ public class Client {
   // Run the client
   @SuppressFBWarnings(
       value = "DM_DEFAULT_ENCODING",
-      justification = "When reading console, ignore default encoding warning")
+      justification = "When reading console, ignore default encoding warning")      
   void run() throws IOException {
 
     BufferedReader reader = null;
@@ -111,7 +115,7 @@ public class Client {
         System.out.print(helper.helloUser(this.user));
       }
       loop(helper, reader);
-    } catch (Exception ex) {
+    } catch (IOException | ClassNotFoundException ex) {
       throw new RuntimeException(ex);
     } finally {
       reader.close();
@@ -122,6 +126,12 @@ public class Client {
       }
     }
   }
+  
+  
+  
+  
+  
+  
 
 // Main loop: print user options, read user input and process
   void loop(CLFormatter helper, BufferedReader reader) throws IOException,
@@ -136,6 +146,7 @@ public class Client {
 
     // The loop
     for (boolean done = false; !done;) {
+        
 
       // Print user options
       if (state.equals("Main")) {
@@ -158,15 +169,28 @@ public class Client {
       // Remainder, if any, are arguments
 
       // Process user input
-      if ("exit".startsWith(cmd)) {
-        // exit command applies in either state
+//      if ("exit".startsWith(cmd)) {
+//        // exit command applies in either state
+//        done = true;
+//      } // "Main" state commands
+//      
+        System.out.println("here I am");
+        Command command = new CommandWords().get(cmd);   
+        command.execute();
+        System.out.println("skrrrt");
+        
+        if("exit".startsWith(cmd)) {
         done = true;
-      } // "Main" state commands
-      else if (state.equals("Main")) {
+    }
+      
+       if (state.equals("Main")) {
         if ("compose".startsWith(cmd)) {
           // Switch to "Drafting" state and start a new "draft"
-          state = "Drafting";
-          draftTopic = rawArgs[0];
+            state = "Drafting";
+            draftTopic = rawArgs[0];
+            
+          
+          
         } else if ("fetch".startsWith(cmd)) {
           // Fetch seets from server
           helper.chan.send(new SeetsReq(rawArgs[0]));
