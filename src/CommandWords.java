@@ -13,7 +13,7 @@ import java.util.Map;
  * @author Dylan
  */
 public class CommandWords {
-    
+    String [] rawArgs;
     private HashMap<String, Command> commands = new HashMap<>();
     
     
@@ -21,8 +21,9 @@ public class CommandWords {
         
         commands = new HashMap<String, Command>();
         
+        
         commands.put("exit", new ExitCommand());
-        commands.put("compose", new ComposeCommand());
+        commands.put("compose", new ComposeCommand(rawArgs));
         commands.put("fetch", new FetchCommand());
         commands.put("body", new BodyCommand());
         commands.put("send", new SendCommand());

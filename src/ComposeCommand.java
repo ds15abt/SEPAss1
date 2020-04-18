@@ -10,8 +10,11 @@
  */
 public class ComposeCommand implements Command {
     
-    public ComposeCommand()
+    String [] rawArgs;
+    
+    public ComposeCommand(String [] rawArgs)
     {
+        this.rawArgs = rawArgs;
     
     }
     
@@ -20,6 +23,8 @@ public class ComposeCommand implements Command {
         
         
         client.state = "Drafting";
+        
+        client.draftTopic = rawArgs[0];
         
 //        draftTopic = rawArgs[0];
         
