@@ -10,8 +10,8 @@
  */
 public class SendCommand implements Command {
 
-        @Override
-    public void execute(){
+    @Override
+    public void execute(Client client){
 
         
     }

@@ -68,13 +68,17 @@ public class Client {
   String user;
   String host;
   int port;
+  public String state;
+  public String draftTopic;
 
   boolean printSplash = true;
 
-  public Client() {
+    public Client(String user, String host, int port) {
       
-      
-      
+        state = "Main";
+        this.user = user;
+        this.host = host;
+        this.port = port;
       
   }
 
@@ -91,7 +95,7 @@ public class Client {
     this.user = user;
     this.host = host;
     this.port = port;
-  }
+}
 
   // Run the client
   @SuppressFBWarnings(
@@ -137,11 +141,11 @@ public class Client {
   void loop(CLFormatter helper, BufferedReader reader) throws IOException,
       ClassNotFoundException {
 
-    // The app is in one of two states: "Main" or "Drafting"
-    String state = "Main";  // Initial state
-
-    // Holds the current draft data when in the "Drafting" state
-    String draftTopic = null;
+//    // The app is in one of two states: "Main" or "Drafting"
+//    String state = "Main";  // Initial state
+//
+//    // Holds the current draft data when in the "Drafting" state
+//    String draftTopic = null;
     List<String> draftLines = new LinkedList<>();
 
     // The loop
@@ -176,7 +180,7 @@ public class Client {
 //      
         
         Command command = new CommandWords().get(cmd);   
-        command.execute();
+        command.execute(this);
         System.out.println("skrrrt");
         
         if("exit".startsWith(cmd)) {

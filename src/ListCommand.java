@@ -14,7 +14,7 @@ public class ListCommand implements Command {
     
     }
         @Override
-    public void execute(){
+    public void execute(Client client){
 
         
     }
