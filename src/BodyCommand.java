@@ -11,7 +11,7 @@
 public class BodyCommand implements Command {
 
         @Override
-    public void execute(){
+    public void execute(Client client){
 
         
     }

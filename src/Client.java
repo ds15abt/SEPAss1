@@ -174,7 +174,7 @@ public class Client {
 //        done = true;
 //      } // "Main" state commands
 //      
-        System.out.println("here I am");
+        
         Command command = new CommandWords().get(cmd);   
         command.execute();
         System.out.println("skrrrt");

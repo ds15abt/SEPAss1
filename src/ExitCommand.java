@@ -17,7 +17,7 @@ public class ExitCommand implements Command {
            
     
     @Override
-    public void execute () {
+    public void execute (Client client) {
         
         System.exit(0);
         

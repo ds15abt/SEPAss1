@@ -11,7 +11,7 @@
 public class DiscardCommand implements Command {
 
     @Override
-    public void execute(){
+    public void execute(Client client){
 
         
     }

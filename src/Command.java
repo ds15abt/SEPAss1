@@ -10,7 +10,7 @@
  */
 public interface Command {
     
-    public void execute ();
+    public void execute (Client client);
     
     
     

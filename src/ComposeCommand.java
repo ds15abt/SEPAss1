@@ -16,8 +16,9 @@ public class ComposeCommand implements Command {
     }
     
     @Override
-    public void execute(){
+    public void execute(Client client){
         String state = "Drafting";
+        
 //        draftTopic = rawArgs[0];
         
     }
