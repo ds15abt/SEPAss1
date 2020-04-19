@@ -55,6 +55,12 @@ public class Parser {
            case "compose":
                return command = new ComposeCommand(rawArgs);
                
+           case "body":
+               return command = new BodyCommand(rawArgs);
+               
+           case "fetch":
+                return command = new FetchCommand(rawArgs);
+               
            default: System.out.println("Error could not get() from Parser");
            return command;
                 

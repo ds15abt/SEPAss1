@@ -217,9 +217,10 @@ public class Client {
 //          String line = Arrays.stream(rawArgs).
 //              collect(Collectors.joining());
 //          draftLines.add(line);
-//        } else if ("send".startsWith(cmd)) {
+//        } else
+//            if ("send".startsWith(cmd)) {
 //          // Send drafted seets to the server, and go back to "Main" state
-//          helper.chan.send(new Publish(user, draftTopic, draftLines));
+          helper.chan.send(new Publish(user, draftTopic, draftLines));
 //          state = "Main";
 //          draftTopic = null;
 //        } else {
@@ -232,3 +233,4 @@ public class Client {
     return;
   }
 }
+
