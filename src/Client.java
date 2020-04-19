@@ -103,38 +103,38 @@ public class Client {
 //}
 
   // Run the client
-  @SuppressFBWarnings(
-      value = "DM_DEFAULT_ENCODING",
-      justification = "When reading console, ignore default encoding warning")      
-  void run() throws IOException {
-
-    BufferedReader reader = null;
-    CLFormatter helper = null;
-    try {
-      reader = new BufferedReader(new InputStreamReader(System.in));
-
-      if (this.user.isEmpty() || this.host.isEmpty()) {
-        System.err.println("User/host has not been set.");
-        System.exit(1);
-      }
-      helper = new CLFormatter(this.host, this.port);
-
-      if (this.printSplash = true);
-      {
-        System.out.print(helper.helloUser(this.user));
-      }
-      loop(helper, reader);
-    } catch (IOException | ClassNotFoundException ex) {
-      throw new RuntimeException(ex);
-    } finally {
-      reader.close();
-      if (helper.chan.isOpen()) {
-        // If the channel is open, send Bye and close
-        helper.chan.send(new Bye());
-        helper.chan.close();
-      }
-    }
-  }
+//  @SuppressFBWarnings(
+//      value = "DM_DEFAULT_ENCODING",
+//      justification = "When reading console, ignore default encoding warning")      
+//  void run() throws IOException {
+//
+//    BufferedReader reader = null;
+//    CLFormatter helper = null;
+//    try {
+//      reader = new BufferedReader(new InputStreamReader(System.in));
+//
+//      if (this.user.isEmpty() || this.host.isEmpty()) {
+//        System.err.println("User/host has not been set.");
+//        System.exit(1);
+//      }
+//      helper = new CLFormatter(this.host, this.port);
+//
+//      if (this.printSplash = true);
+//      {
+//        System.out.print(helper.helloUser(this.user));
+//      }
+//      loop(helper, reader);
+//    } catch (IOException | ClassNotFoundException ex) {
+//      throw new RuntimeException(ex);
+//    } finally {
+//      reader.close();
+//      if (helper.chan.isOpen()) {
+//        // If the channel is open, send Bye and close
+//        helper.chan.send(new Bye());
+//        helper.chan.close();
+//      }
+//    }
+//  }
   
   
   
@@ -143,27 +143,27 @@ public class Client {
   
 
 // Main loop: print user options, read user input and process
-  void loop(CLFormatter helper, BufferedReader reader) throws IOException,
-      ClassNotFoundException {
-
-//    // The app is in one of two states: "Main" or "Drafting"
-//    String state = "Main";  // Initial state
+//  void loop(CLFormatter helper, BufferedReader reader) throws IOException,
+//      ClassNotFoundException {
 //
-//    // Holds the current draft data when in the "Drafting" state
-//    String draftTopic = null;
-    List<String> draftLines = new LinkedList<>();
-
-    // The loop
-    for (boolean done = false; !done;) {
-        
-
-      // Print user options
-      if (state.equals("Main")) {
-        System.out.print(helper.formatMainMenuPrompt());
-      } else {  // state = "Drafting"
-        System.out.print(helper.
-            formatDraftingMenuPrompt(draftTopic, draftLines));
-      }
+////    // The app is in one of two states: "Main" or "Drafting"
+////    String state = "Main";  // Initial state
+////
+////    // Holds the current draft data when in the "Drafting" state
+////    String draftTopic = null;
+//    List<String> draftLines = new LinkedList<>();
+//
+//    // The loop
+//    for (boolean done = false; !done;) {
+//        
+//
+//      // Print user options
+//      if (state.equals("Main")) {
+//        System.out.print(helper.formatMainMenuPrompt());
+//      } else {  // state = "Drafting"
+//        System.out.print(helper.
+//            formatDraftingMenuPrompt(draftTopic, draftLines));
+//      }
 
 //      // Read a line of user input
 //      String raw = reader.readLine();
@@ -183,11 +183,11 @@ public class Client {
 //        done = true;
 //      } // "Main" state commands
 //      
-        parser.userInput(reader);
-        
-        Command command = parser.get();   
-        command.execute(this);
-        System.out.println("skrrrt");
+//        parser.userInput(reader);
+//        
+//        Command command = parser.get();   
+//        command.execute(this);
+//        System.out.println("skrrrt");
         
 //        if("exit".startsWith(cmd)) {
 //        done = true;
@@ -220,7 +220,7 @@ public class Client {
 //        } else
 //            if ("send".startsWith(cmd)) {
 //          // Send drafted seets to the server, and go back to "Main" state
-          helper.chan.send(new Publish(user, draftTopic, draftLines));
+//          helper.chan.send(new Publish(user, draftTopic, draftLines));
 //          state = "Main";
 //          draftTopic = null;
 //        } else {
@@ -229,8 +229,8 @@ public class Client {
 //      } else {
 //        System.out.println("Could not parse command/args.");
 //      }
-    }
-    return;
-  }
+//    }
+//    return;
+//  }
 }
 

@@ -4,6 +4,14 @@ import java.util.Iterator;
 import java.util.List;
 import sep.seeter.net.channel.ClientChannel;
 import sep.seeter.net.message.Message;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.text.MessageFormat;
+import java.text.NumberFormat;
+import java.util.Locale;
+import java.util.Random;
+import java.util.ResourceBundle;
 
 /**
  * A helper class for the current prototype {@link Client client}.  <i>E.g.</i>,
@@ -12,6 +20,8 @@ import sep.seeter.net.message.Message;
 public class CLFormatter {
 
   static ClientChannel chan;  // Client-side channel for talking to a Seeter server
+  static Internationalisation inter = new Internationalisation();
+  
 
   CLFormatter(String host, int port) {
     this.chan = new ClientChannel(host, port);
@@ -30,9 +40,11 @@ public class CLFormatter {
   /* Following are the auxiliary methods for formatting the UI text */
 
   static String helloUser(String user) {
-    return "\nHello " + user + "!\n"
-        + "Note:  Commands can be abbreviated to any prefix, "
-        + "e.g., fe [mytopic].\n";
+      return inter.printlnWithParams(inter.strings.getString("welcome_message"), user)+ inter.strings.getString("note_message");
+      
+//    return "\nHello " + user + "!\n"
+//        + "Note:  Commands can be abbreviated to any prefix, "
+//        + "e.g., fe [mytopic].\n";
   }
 
   static String formatMainMenuPrompt() {
