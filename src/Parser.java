@@ -46,7 +46,7 @@ public class Parser {
       rawArgs = split.toArray(new String[split.size()]);
    }
    
-   public Command get () {
+   public Command get () throws IOException {
        
        switch(cmd){
            case "exit":
@@ -60,6 +60,9 @@ public class Parser {
                
            case "fetch":
                 return command = new FetchCommand(rawArgs);
+                
+           case "send":
+               return command = new SendCommand(rawArgs);
                
            default: System.out.println("Error could not get() from Parser");
            return command;
