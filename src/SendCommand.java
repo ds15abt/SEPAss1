@@ -25,7 +25,7 @@ public class SendCommand implements Command {
     
     public SendCommand (String[] rawArgs) throws IOException
     {
-        CLFormatter.chan.send(new SeetsReq(rawArgs[0]));
+        helper.chan.send(new SeetsReq(rawArgs[0]));
         this.rawArgs= rawArgs;
     }
 
