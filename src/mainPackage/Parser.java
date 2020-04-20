@@ -27,8 +27,8 @@ public class Parser {
     
     private Command command;
     private Client client;
-    String cmd; 
-    String[] rawArgs;
+    private String cmd; 
+    private String[] rawArgs;
     
     public Parser(Client client)
     {

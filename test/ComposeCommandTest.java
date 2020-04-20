@@ -72,7 +72,7 @@ public class ComposeCommandTest {
         String toRead = "Compose" + " Ting";
         ByteArrayInputStream input = new ByteArrayInputStream(toRead.getBytes("UTF-8"));
         System.setIn(input);
-        System.out.println("state = " + client.state);
+//        System.out.println("state = " + client.state);
         
         
         

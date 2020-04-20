@@ -67,11 +67,11 @@ import sep.seeter.net.message.SeetsReq;
  */
 public class Client {
 
-  String user;
-  String host;
-  int port;
-  public String state;
-  public String draftTopic;
+  private String user;
+  private String host;
+  private int port;
+  private  String state;
+  private  String draftTopic;
   private Parser parser; 
 
   boolean printSplash = true;
