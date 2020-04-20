@@ -121,7 +121,7 @@ public class Controller {
         }
         else{
         command.execute(client);
-        System.out.println("skrrrt");
+        
         }
 //        if("exit".startsWith(cmd)) {
 //        done = true;

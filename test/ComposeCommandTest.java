@@ -7,6 +7,7 @@ package mainPackage;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -16,6 +17,7 @@ import java.util.Scanner;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import sep.seeter.server.Server;
 
 /**
  *
@@ -23,62 +25,85 @@ import static org.junit.Assert.*;
  */
 public class ComposeCommandTest {
     
-    public ComposeCommandTest() {
-    }
+    private ByteArrayOutputStream printed = new ByteArrayOutputStream();
+    private Controller controller;
+    
+    
     
     @Before
     public void setUp() throws IOException {
         
-        BufferedReader reader = null;
-        String cmd = "Compose";
-        String user = "user123";
-        String host = "hostting";
+        
+        
+        String user = "Dylan";
+        String host = "localHost";
         int port = Integer.parseInt("8888");
         Client client = new Client(user, host, port);
         
         Parser parser = new Parser(client);
-        Controller controller = new Controller(parser, client);
+        controller = new Controller(parser, client);
+       
+        Server server = new Server(8888);
+        new Thread(() -> server.run()).start();
+       
+        System.setOut(new PrintStream(printed));
+       
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    }
+    
+    @Test
+    public void composeState() throws UnsupportedEncodingException, IOException {
+        
+        
+        
+
+        String expResult = "Drafting";        
+        String toRead = "compose blabla\nexit"; 
+        ByteArrayInputStream input= new ByteArrayInputStream(toRead.getBytes("UTF-8"));
+        System.setIn(input);
+        
         controller.run();
         
-        String toRead = "Compose" + " Ting";
         
         
         
-        ByteArrayInputStream input= new ByteArrayInputStream(toRead.getBytes("UTF-8"));
-        System.setIn(input); 
+        
+        
+        String out = printed.toString("UTF-8");
+        
+        assertTrue(out.contains(expResult));
+        
+        
 
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
     }
 
     /**
      * Test of execute method, of class ComposeCommand.
      */
     
-    @Test
-    public void testExecute() throws UnsupportedEncodingException{
-        
-        String toRead = "Compose" + " Ting";
-        ByteArrayInputStream input = new ByteArrayInputStream(toRead.getBytes("UTF-8"));
-        System.setIn(input);
-//        System.out.println("state = " + client.state);
-        
-        
-        
-        
-    }
-        
+//    @Test
+//    public void testExecute() throws UnsupportedEncodingException{
+//        
+//        String toRead = "Compose" + " Ting";
+//        ByteArrayInputStream input = new ByteArrayInputStream(toRead.getBytes("UTF-8"));
+//        System.setIn(input);
+////        System.out.println("state = " + client.state);
+//        
+//        
+//        
+//        
+//    }
+//        
     
     
     
