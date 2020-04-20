@@ -43,15 +43,15 @@ public class Controller {
     try {
       reader = new BufferedReader(new InputStreamReader(System.in));
 
-      if (client.user.isEmpty() || client.host.isEmpty()) {
+      if (client.getUser().isEmpty() || client.getHost().isEmpty()) {
         System.err.println("User/host has not been set.");
         System.exit(1);
       }
-      helper = new CLFormatter(client.host, client.port);
+      helper = new CLFormatter(client.getHost(), client.getPort());
 
       if (client.printSplash = true);
       {
-        System.out.print(helper.helloUser(client.user));
+        System.out.print(helper.helloUser(client.getUser()));
       }
       loop(helper, reader);
     } catch (IOException | ClassNotFoundException ex) {
@@ -88,11 +88,11 @@ public class Controller {
         
 
       // Print user options
-      if (client.state.equals("Main")) {
+      if (client.getState().equals("Main")) {
         System.out.print(helper.formatMainMenuPrompt());
       } else {  // state = "Drafting"
         System.out.print(helper.
-            formatDraftingMenuPrompt(client.draftTopic, draftLines));
+            formatDraftingMenuPrompt(client.getDraftTopic(), draftLines));
       }
 
 //      // Read a line of user input

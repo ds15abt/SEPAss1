@@ -31,7 +31,7 @@ public class FetchCommand implements Command {
         @Override
     public void execute( Client client){
         
-        client.state = "Main";
+        client.setStateMain();
         try {
             helper.chan.send(new SeetsReq(rawArgs[0]));
         } catch (IOException ex) {

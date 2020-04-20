@@ -37,12 +37,12 @@ public class SendCommand implements Command {
     public void execute(Client client){
         
         try {
-            helper.chan.send(new Publish(client.user, client.draftTopic, draftLines));
+            helper.chan.send(new Publish(client.getUser(), client.draftTopic, draftLines));
             
         } catch (IOException ex) {
             Logger.getLogger(SendCommand.class.getName()).log(Level.SEVERE, null, ex);
         }
-        client.state = "Main";
+        client.setStateMain();
         
         client.draftTopic = null;
 

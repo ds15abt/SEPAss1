@@ -71,7 +71,7 @@ public class Client {
   private String host;
   private int port;
   private  String state;
-  private  String draftTopic;
+  String draftTopic;
   private Parser parser; 
 
   boolean printSplash = true;
@@ -97,7 +97,43 @@ public class Client {
 //    client.run();
     controller.run();
   }
+  
+  public String getDraftTopic(){
+      return draftTopic;
+  }
+  
+//  public void setDraftTopic(){
+//      draftTopic= rawArgs[0];
+//      
+//  }
+  
+  public void setStateDrafting(){
+      state = "Drafting";
+  }
+  
+  public void setStateMain(){
+      state = "Main";
+  }
+ 
+  
+  public String getState(){
+      
+      return state;
+  }
 
+  public String getUser(){
+      return user;
+  }
+  
+  public String getHost(){
+      return host;
+  }
+  
+  public int getPort(){
+      return port;
+  }
+          
+  
 //  public void set(String user, String host, int port) {
 //    this.user = user;
 //    this.host = host;
