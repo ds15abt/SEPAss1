@@ -3,6 +3,7 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+<<<<<<< HEAD
             <file>file:/E:/SEPass3/SEPAss1/src/Controller.java</file>
             <file>file:/E:/SEPass3/SEPAss1/src/CLFormatter.java</file>
             <file>file:/E:/SEPass3/SEPAss1/src/sep/mvc/AbstractModel.java</file>
@@ -12,6 +13,15 @@
             <file>file:/E:/SEPass3/SEPAss1/src/Parser.java</file>
             <file>file:/E:/SEPass3/SEPAss1/src/sep/mvc/AbstractController.java</file>
             <file>file:/E:/SEPass3/SEPAss1/src/Internationalisation.java</file>
+=======
+            <file>file:/E:/SEPass3/SEPAss1/src/sep/mvc/AbstractModel.java</file>
+            <file>file:/E:/SEPass3/SEPAss1/src/mainPackage/Controller.java</file>
+            <file>file:/E:/SEPass3/SEPAss1/src/mainPackage/Parser.java</file>
+            <file>file:/E:/SEPass3/SEPAss1/src/mainPackage/ComposeCommand.java</file>
+            <file>file:/E:/SEPass3/SEPAss1/test/ComposeCommandTest.java</file>
+            <file>file:/E:/SEPass3/SEPAss1/src/sep/mvc/AbstractController.java</file>
+            <file>file:/E:/SEPass3/SEPAss1/src/mainPackage/Client.java</file>
+>>>>>>> unittests
         </group>
     </open-files>
 </project-private>

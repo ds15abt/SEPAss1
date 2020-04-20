@@ -28,7 +28,11 @@ public class BodyCommand implements Command {
         @Override
     public void execute(Client client){
         
+<<<<<<< HEAD
         client.state = "Drafting";
+=======
+        client.setStateDrafting();
+>>>>>>> unittests
         
         String line = Arrays.stream(rawArgs).
         collect(Collectors.joining());

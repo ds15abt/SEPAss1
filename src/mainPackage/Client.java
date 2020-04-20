@@ -67,11 +67,19 @@ import sep.seeter.net.message.SeetsReq;
  */
 public class Client {
 
+<<<<<<< HEAD
   String user;
   String host;
   int port;
   public String state;
   public String draftTopic;
+=======
+  private String user;
+  private String host;
+  private int port;
+  private  String state;
+  String draftTopic;
+>>>>>>> unittests
   private Parser parser; 
 
   boolean printSplash = true;
@@ -97,7 +105,47 @@ public class Client {
 //    client.run();
     controller.run();
   }
+<<<<<<< HEAD
 
+=======
+  
+  public String getDraftTopic(){
+      return draftTopic;
+  }
+  
+//  public void setDraftTopic(){
+//      draftTopic= rawArgs[0];
+//      
+//  }
+  
+  public void setStateDrafting(){
+      state = "Drafting";
+  }
+  
+  public void setStateMain(){
+      state = "Main";
+  }
+ 
+  
+  public String getState(){
+      
+      return state;
+  }
+
+  public String getUser(){
+      return user;
+  }
+  
+  public String getHost(){
+      return host;
+  }
+  
+  public int getPort(){
+      return port;
+  }
+          
+  
+>>>>>>> unittests
 //  public void set(String user, String host, int port) {
 //    this.user = user;
 //    this.host = host;
