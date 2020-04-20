@@ -1,12 +1,7 @@
 package mainPackage;
 
 
-import mainPackage.FetchCommand;
-import mainPackage.ExitCommand;
-import mainPackage.ComposeCommand;
-import mainPackage.Command;
-import mainPackage.Client;
-import mainPackage.BodyCommand;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.Arrays;
