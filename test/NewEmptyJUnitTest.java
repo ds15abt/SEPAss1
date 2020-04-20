@@ -23,7 +23,7 @@ import sep.seeter.server.Server;
  *
  * @author user1
  */
-public class ComposeCommandTest {
+public class NewEmptyJUnitTest {
     
     private ByteArrayOutputStream printed = new ByteArrayOutputStream();
     private Controller controller;
@@ -86,56 +86,4 @@ public class ComposeCommandTest {
         
 
     }
-
-    /**
-     * Test of execute method, of class ComposeCommand.
-     */
-    
-//    @Test
-//    public void testExecute() throws UnsupportedEncodingException{
-//        
-//        String toRead = "Compose" + " Ting";
-//        ByteArrayInputStream input = new ByteArrayInputStream(toRead.getBytes("UTF-8"));
-//        System.setIn(input);
-////        System.out.println("state = " + client.state);
-//        
-//        
-//        
-//        
-//    }
-//        
-    
-    
-    
-//    @Test
-//    public void testExecute() {
-//        String expectedRes = "Drafting";
-//    }
-//   
-//    @Test
-//    public static String testUserInput(InputStream in,PrintStream out) {
-//    Scanner reader = new Scanner(in);
-//    
-//    String input = reader.next("Compose");
-//    
-//
-//    
-//
-//    return input;
-//}
-//    
-//    public static int testUserInput(InputStream in,PrintStream out) {
-//    Scanner keyboard = new Scanner(in);
-//    out.println("Give a number between 1 and 10");
-//    int input = keyboard.nextInt();
-//
-//    while (input < 1 || input > 10) {
-//        out.println("Wrong number, try again.");
-//        input = keyboard.nextInt();
-//    }
-//
-//    return input;
-//}
-    
-    
 }
