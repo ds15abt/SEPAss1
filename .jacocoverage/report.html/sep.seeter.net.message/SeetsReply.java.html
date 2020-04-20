@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>SeetsReply.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;RecommendedRedesign&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">sep.seeter.net.message</a> &gt; <span class="el_source">SeetsReply.java</span></div><h1>SeetsReply.java</h1><pre class="source lang-java linenums">/*
+ * This file is part of the base framework given to you for the 6COM1038 
+ * Software Engineering Practice coursework assessment -- a text-based command
+ * line tweeter application.
+ * 
+ * Generally, you do not need to, and should not, modify this file.  Any 
+ * testing of your submitted coded will, in the first instance, be against the
+ * base framework as provided.  
+ * 
+ * You may, however, wish to modify the base framework classes as part of your 
+ * debugging or for your own interest -- that is fine, but you should ensure 
+ * any such modifications are compatible with the existing base code, i.e., 
+ * with regards to compilation and functionality.  You are advised to conduct 
+ * your own tests against the base framework.
+ */
+package sep.seeter.net.message;
+
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.stream.Collectors;
+
+/**
+ * A {@code SEET-REPLY} message: the server reply to a
+ * {@linkplain sep.seeter.net.message.SeetsReq SEET} request: the list of lines
+ * recorded by the server for the specified topic, listed from the specified
+ * index.
+ * &lt;p&gt;
+ * Instances of this class are immutable.
+ *
+ * @author rhu1 {@literal &lt;r.z.h.hu@herts.ac.uk&gt;}
+ */
+public final class SeetsReply implements Message {
+
+  private static final long serialVersionUID = 1L;  // Default
+
+  /**
+   * The header code.
+   */
+  public static final String HEADER = &quot;SEET-REPLY&quot;;
+
+  /**
+   * A list naming the users who authored the requested seets. The size of this
+   * list and the order of the items contained corresponds to that of {@link
+   * #lines}
+   */
+  public final List&lt;String&gt; users;
+
+  /**
+   * A list of the body lines of the requested seets. This list may be empty.
+   */
+  public final List&lt;String&gt; lines;
+
+  /**
+   * Create a new {@code SEET-REPLY} message. (Used by a server.)
+   *
+   * @param users The list of user names of the seet authors
+   * @param lines The list of requested seet body lines
+   * @throws IllegalArgumentException If users or lines is empty, or any of the
+   *                                  users names or body lines are invalid
+   *
+   * @see sep.seeter.net.message.Message#isValidUserId(String)
+   * @see sep.seeter.net.message.Message#isValidBody(String)
+   */
+<span class="nc" id="L65">  public SeetsReply(final List&lt;String&gt; users, final List&lt;String&gt; lines) {</span>
+<span class="nc bnc" id="L66" title="All 2 branches missed.">    if (users.size() != lines.size()) {</span>
+<span class="nc" id="L67">      throw new IllegalArgumentException(</span>
+          &quot;users and lines must be the same size: &quot; + users + &quot; , &quot; + lines);
+    }
+<span class="nc" id="L70">    users.forEach(Message::isValidUserId);</span>
+<span class="nc" id="L71">    lines.forEach(Message::isValidBody);</span>
+<span class="nc" id="L72">    this.users = Collections.unmodifiableList(users);</span>
+<span class="nc" id="L73">    this.lines = Collections.unmodifiableList(lines);</span>
+<span class="nc" id="L74">  }</span>
+
+  @Override
+  public String getHeader() {
+<span class="nc" id="L78">    return SeetsReply.HEADER;</span>
+  }
+
+  @Override
+  public String toString() {
+<span class="nc" id="L83">    final Iterator&lt;String&gt; it = this.lines.iterator();</span>
+<span class="nc" id="L84">    return SeetsReply.HEADER</span>
+<span class="nc" id="L85">        + this.users.stream().map(x -&gt; &quot; @&quot; + x + &quot; &quot; + it.next())</span>
+<span class="nc" id="L86">            .collect(Collectors.joining());</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>

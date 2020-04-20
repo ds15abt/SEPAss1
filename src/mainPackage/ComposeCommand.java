@@ -28,11 +28,9 @@ public class ComposeCommand implements Command {
     public void execute(Client client){
         
         
-<<<<<<< HEAD
-        client.state = "Drafting";
-=======
+
         client.setStateDrafting();
->>>>>>> unittests
+
         
         client.draftTopic = rawArgs[0];
         

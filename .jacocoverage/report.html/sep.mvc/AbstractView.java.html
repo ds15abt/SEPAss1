@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>AbstractView.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;RecommendedRedesign&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">sep.mvc</a> &gt; <span class="el_source">AbstractView.java</span></div><h1>AbstractView.java</h1><pre class="source lang-java linenums">/*
+ * This file is part of the base framework given to you for the 6COM1038
+ * Software Engineering Practice coursework assessment -- a text-based command
+ * line tweeter application.
+ *
+ * Generally, you do not need to, and should not, modify this file.  Any
+ * testing of your submitted coded will, in the first instance, be against the
+ * base framework as provided.
+ *
+ * You may, however, wish to modify the base framework classes as part of your
+ * debugging or for your own interest -- that is fine, but you should ensure
+ * any such modifications are compatible with the existing base code, i.e.,
+ * with regards to compilation and functionality.  You are advised to conduct
+ * your own tests against the base framework.
+ */
+package sep.mvc;
+
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+/**
+ * A View provides the front-end user interface, which includes appropriate
+ * presentation of the relevant model data to the user. The lifetime of an MVC
+ * application is often tied to its front-end UI.
+ * &lt;p&gt;
+ * The View accepts user input, and conveys the corresponding commands to the
+ * registered {@linkplain sep.mvc.AbstractController Controller} for
+ * processing. The View interacts closely with the Controller, but should not
+ * be coupled to any particular Controller (&lt;i&gt;i.e.&lt;/i&gt;, a View should be
+ * interoperable with different Controllers).
+ * &lt;p&gt;
+ * A View may itself determine when it should be updated, and retrieve the
+ * required information directly from the
+ * {@linkplain sep.mvc.AbstractModel Model}, or operations performed on the
+ * Model (as directed by the Controller) may actively push updates to the View,
+ * or some combination thereof. The design can depend on whether the UI
+ * supports synchronous or asynchronous user interactions.
+ *
+ * @author rhu1 {@literal &lt;r.z.h.hu@herts.ac.uk&gt;}
+ */
+public abstract class AbstractView {
+
+  private AbstractController control;
+
+  /**
+   * This View is created without a registered Controller. A Controller is
+   * registered by passing this View when the Controller is created.
+   *
+   * @see #setController(sep.mvc.AbstractController)
+   */
+<span class="nc" id="L52">  protected AbstractView() {</span>
+<span class="nc" id="L53">    this.control = null;</span>
+<span class="nc" id="L54">  }</span>
+
+  /**
+   * Initialise this View. To be called once, and only once, before
+   * {@link #run()}.
+   * &lt;p&gt;
+   * May be called by the top-level application bootstrapper (&lt;i&gt;e.g.&lt;/i&gt;, the
+   * {@code main} method).
+   *
+   * @throws IllegalStateException If no Controller has been registered.
+   */
+  public void init() {
+<span class="nc bnc" id="L66" title="All 2 branches missed.">    if (this.control == null) {</span>
+<span class="nc" id="L67">      throw new IllegalStateException(&quot;[MVC error] &quot;</span>
+          + &quot;This View has not been passed to a Controller.&quot;);
+    }
+<span class="nc" id="L70">  }</span>
+
+  /**
+   * Close this View. This operation is idempotent.
+   */
+  public abstract void close();
+
+  /* UI */
+
+  /**
+   * Start the main UI loop. That is, maintain an up-to-date presentation of
+   * the front-end user interface (&lt;i&gt;e.g.&lt;/i&gt;, via {@link #update()}), and
+   * interpret user input as commands for the Controller to process.
+   * &lt;p&gt;
+   * May be called by the top-level application bootstrapper (&lt;i&gt;e.g.&lt;/i&gt;, the
+   * {@code main} method) &lt;i&gt;after&lt;/i&gt; {@code init} has been called.
+   * &lt;p&gt;
+   * Precondition: {@link #init()} has been called.
+   *
+   * @throws IOException If a user input error occurs
+   */
+  public abstract void run() throws IOException;
+
+  /**
+   * Update the presentation of the front-end UI. May be called by
+   * {@link #run()}, or from the model/Controller, as appropriate for the
+   * application and UI design.
+   */
+  public abstract void update();
+
+  /* Getters */
+
+  /**
+   * Get the Controller registered to this View, if any.
+   *
+   * @return The registered Controller, if any
+   * @throws IllegalStateException If no Controller has been registered
+   */
+  protected AbstractController getController() {
+<span class="nc bnc" id="L109" title="All 2 branches missed.">    if (this.control == null) {</span>
+<span class="nc" id="L110">      throw new IllegalStateException(&quot;[MVC error] &quot;</span>
+          + &quot;This View has not been bound to a Controller.&quot;);
+    }
+<span class="nc" id="L113">    return this.control;</span>
+  }
+
+  /**
+   * Get the model bound to the registered Controller, if a Controller has been
+   * registered.
+   *
+   * @return The bound model, if a Controller has been registered
+   * @throws IllegalStateException If no Controller has been registered
+   */
+  protected AbstractModel getModel() {
+<span class="nc" id="L124">    return getController().getModel();  // Checks if a Controller registered</span>
+  }
+
+  /* Auxiliary */
+
+  /**
+   * Registers the Controller if one has not been registered so far; otherwise
+   * the supplied Controller is shut down. Implicitly called by the
+   * {@link sep.mvc.AbstractController#AbstractController(AbstractModel, AbstractView)}
+   * constructor. Normally, you should not need to override this method.
+   *
+   * @param control The Controller to register
+   * @throws IllegalArgumentException If registering a null Controller
+   */
+  protected void setController(final AbstractController control) {
+<span class="nc bnc" id="L139" title="All 2 branches missed.">    if (control == null) {</span>
+<span class="nc" id="L140">      throw new IllegalArgumentException(</span>
+          &quot;[MVC error] Registering a null Controller.&quot;);
+    }
+<span class="nc bnc" id="L143" title="All 2 branches missed.">    if (this.control != null) {</span>
+<span class="nc" id="L144">      Logger.getLogger(AbstractView.class.getName()).log(Level.SEVERE,</span>
+          &quot;[MVC error] Controller already set.  Shutting down.&quot;);
+<span class="nc" id="L146">      control.shutdown();</span>
+    }
+<span class="nc" id="L148">    this.control = control;</span>
+<span class="nc" id="L149">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>

@@ -37,20 +37,16 @@ public class SendCommand implements Command {
     public void execute(Client client){
         
         try {
-<<<<<<< HEAD
-            helper.chan.send(new Publish(client.user, client.draftTopic, draftLines));
-=======
+
             helper.chan.send(new Publish(client.getUser(), client.draftTopic, draftLines));
->>>>>>> unittests
+
             
         } catch (IOException ex) {
             Logger.getLogger(SendCommand.class.getName()).log(Level.SEVERE, null, ex);
         }
-<<<<<<< HEAD
-        client.state = "Main";
-=======
+
         client.setStateMain();
->>>>>>> unittests
+
         
         client.draftTopic = null;
 

@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Server.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;RecommendedRedesign&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">sep.seeter.server</a> &gt; <span class="el_source">Server.java</span></div><h1>Server.java</h1><pre class="source lang-java linenums">/*
+ * This file is part of the base framework given to you for the 6COM1038
+ * Software Engineering Practice coursework assessment -- a text-based command
+ * line tweeter application.
+ *
+ * Generally, you do not need to, and should not, modify this file.  Any
+ * testing of your submitted coded will, in the first instance, be against the
+ * base framework as provided.
+ *
+ * You may, however, wish to modify the base framework classes as part of your
+ * debugging or for your own interest -- that is fine, but you should ensure
+ * any such modifications are compatible with the existing base code, i.e.,
+ * with regards to compilation and functionality.  You are advised to conduct
+ * your own tests against the base framework.
+ */
+package sep.seeter.server;
+
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.net.SocketException;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.stream.Stream;
+import sep.seeter.net.message.Message;
+
+/**
+ * {@code Server} is a minimal but adequately functional and robust Seeter
+ * server for you to develop and test your client against.
+ * &lt;p&gt;
+ * The argument required to run the server corresponds to {@link #Server(int)}:
+ * the port number that the server should listen on.
+ * &lt;p&gt;
+ * You can compile and run Server using &lt;b&gt;NetBeans&lt;/b&gt; (&lt;i&gt;e.g.&lt;/i&gt;, Run
+ * {@literal -&gt;} Set Project Configuration {@literal -&gt;} Customize...
+ * {@literal -&gt;} New...).
+ * &lt;p&gt;
+ * Assuming you have compiled using NetBeans (or another method), you can also
+ * run Server from the command line:
+ * &lt;ul&gt;
+ * &lt;li&gt;
+ * Run:&lt;br&gt; {@code C:\...\seeter&gt; java -cp build\classes
+ * sep.seeter.server.Server 8888}
+ * &lt;/ul&gt;
+ * &lt;p&gt;
+ * &lt;i&gt;Note:&lt;/i&gt; On some platforms (&lt;i&gt;e.g.&lt;/i&gt;, Windows), you may be prompted
+ * with a security warning due to the Server opening a network socket. You must
+ * allow this for the Server to function.
+ * &lt;p&gt;
+ * An instance of {@code Server} understands and communicates the messages in
+ * {@link sep.seeter.net.message}.
+ * &lt;ul&gt;
+ * &lt;li&gt; {@link sep.seeter.net.message.Bye} - tells the {@code Server} to end
+ * this communication session with the sender client.
+ * &lt;li&gt; {@link sep.seeter.net.message.TopicsReq} - request the set of topics
+ * recorded by the {@code Server}.
+ * &lt;ul&gt;
+ * &lt;li&gt; {@link sep.seeter.net.message.TopicsReply} - the {@code Server}'s
+ * reply: the set of topics (possibly empty).
+ * &lt;/ul&gt;
+ * &lt;li&gt; {@link sep.seeter.net.message.SeetsReq} - request the (sub)list of
+ * seets recorded by the {@code Server} for the specified topic, from the
+ * specified index (inclusive, starting from index 0). Note: The topic may not
+ * be &lt;i&gt;explicitly&lt;/i&gt; recorded by the {@code Server}.
+ * &lt;ul&gt;
+ * &lt;li&gt; {@link sep.seeter.net.message.SeetsReply} - the {@code Server}'s reply,
+ * the list of seets (possibly empty).
+ * &lt;/ul&gt;
+ * &lt;li&gt; {@link sep.seeter.net.message.Publish} - append a (non-empty) list of
+ * seets to each (possibly new) topic in the (non-empty) set of topics.
+ * &lt;/ul&gt;
+ * &lt;p&gt;
+ * Your client should use {@link sep.seeter.net.channel.ClientChannel} top send
+ * and receive messages of the above types with Server: see the
+ * {@link sep.seeter.net.channel.ClientChannel#send(Message)} and
+ * {@link sep.seeter.net.channel.ClientChannel#receive()} methods.
+ *
+ * @author rhu1 {@literal &lt;r.z.h.hu@herts.ac.uk&gt;}
+ */
+public class Server implements AutoCloseable {
+
+  protected final boolean debug;
+
+  private final ServerSocket servSock;
+
+<span class="nc" id="L94">  private final Object mutex = new Object();</span>
+
+  /*
+   * {@code db} maps a topic to a list of &lt;user, line&gt; pairs.
+   * {@code Server} is neutral w.r.t. topic/seet data types used by a client -
+   * it simply records topics, user names and text as strings.
+   */
+<span class="nc" id="L101">  private final Map&lt;String, List&lt;Pair&lt;String, String&gt;&gt;&gt; db = new HashMap&lt;&gt;();</span>
+
+
+  /**
+   * Create a new Seeter servSock, bound to the specified port. This is
+   * equivalent to
+   * {@linkplain #Server(boolean,int) Server}{@code (false, port)}.
+   *
+   * @param port The port number that the servSock will listen on
+   * @throws IOException If the servSock socket could not be opened
+   */
+  public Server(final int port) throws IOException {
+<span class="nc" id="L113">    this(false, port);</span>
+<span class="nc" id="L114">  }</span>
+
+  /**
+   * Create a new Seeter servSock, bound to the specified port, with debug
+   * output enabled or disabled.
+   *
+   * @param debug Enable or disable local debug output printing ({@code true}
+   *              means enabled)
+   * @param port  The port number that the servSock will listen on
+   * @throws IOException If the servSock socket could not be opened
+   */
+<span class="nc" id="L125">  public Server(final boolean debug, final int port) throws IOException {</span>
+<span class="nc" id="L126">    this.debug = debug;</span>
+<span class="nc" id="L127">    this.servSock = new ServerSocket(port);</span>
+<span class="nc" id="L128">  }</span>
+
+  /**
+   * To be called once, and once only, on a {@code Seeter} instance to start
+   * accepting and serving client connections.
+   */
+  public void run() {
+    while (true) {
+      try {
+<span class="nc" id="L137">        final Socket s = this.servSock.accept();</span>
+<span class="nc" id="L138">        new ServerThread(this, s).start();</span>
+<span class="nc" id="L139">      } catch (SocketException ex) {</span>
+        // Server socket closed -- swallow silently
+<span class="nc" id="L141">      } catch (IOException ex) {</span>
+<span class="nc" id="L142">        Logger.getLogger(Server.class.getName()).log(Level.WARNING,</span>
+            &quot;Connection accept error: &quot;, ex);
+<span class="nc" id="L144">      }</span>
+    }
+  }
+
+  /**
+   * Shut down this Seeter servSock.
+   */
+  @Override
+  public void close() {
+    try {
+<span class="nc" id="L154">      this.servSock.close();</span>
+<span class="nc" id="L155">    } catch (IOException ex) {</span>
+<span class="nc" id="L156">      Logger.getLogger(Server.class.getName()).log(Level.WARNING,</span>
+          &quot;Server socket close error: &quot;, ex);
+<span class="nc" id="L158">    }</span>
+<span class="nc" id="L159">  }</span>
+
+  /* Seets -- synchronized methods (keep critical sections small) */
+
+  protected void addSeets(final Set&lt;String&gt; topics,
+      final List&lt;Pair&lt;String, String&gt;&gt; seets) {
+<span class="nc" id="L165">    synchronized (this.mutex) {</span>
+<span class="nc bnc" id="L166" title="All 2 branches missed.">      for (final String topic : topics) {</span>
+<span class="nc" id="L167">        List&lt;Pair&lt;String, String&gt;&gt; tmp = this.db.get(topic);</span>
+<span class="nc bnc" id="L168" title="All 2 branches missed.">        if (tmp == null) {</span>
+<span class="nc" id="L169">          tmp = new LinkedList&lt;&gt;();</span>
+<span class="nc" id="L170">          this.db.put(topic, tmp);</span>
+        }
+<span class="nc" id="L172">        tmp.addAll(seets);</span>
+<span class="nc" id="L173">      }</span>
+<span class="nc" id="L174">    }</span>
+<span class="nc" id="L175">  }</span>
+
+  protected Set&lt;String&gt; getTopics() {
+<span class="nc" id="L178">    synchronized (this.mutex) {</span>
+<span class="nc" id="L179">      return new HashSet&lt;&gt;(this.db.keySet());</span>
+<span class="nc" id="L180">    }</span>
+  }
+
+  // Pre: req.index &gt;= 0 -- guaranteed by SeetsReq
+  protected List&lt;Pair&lt;String, String&gt;&gt; getSeets(final String topic,
+      final int index) {
+<span class="nc" id="L186">    synchronized (this.mutex) {</span>
+<span class="nc bnc" id="L187" title="All 2 branches missed.">      if (!this.db.containsKey(topic)) {</span>
+<span class="nc" id="L188">        return Collections.emptyList();</span>
+      }
+<span class="nc" id="L190">      final List&lt;Pair&lt;String, String&gt;&gt; seets = this.db.get(topic);</span>
+<span class="nc bnc" id="L191" title="All 2 branches missed.">      if (index &gt;= seets.size()) {</span>
+<span class="nc" id="L192">        return Collections.emptyList();</span>
+      }
+<span class="nc" id="L194">      return Collections.unmodifiableList(seets.subList(index, seets.size()));</span>
+      // ^Because SubList is not Seriablizable
+<span class="nc" id="L196">    }</span>
+  }
+
+  /* Main */
+
+  /**
+   * Create and run a {@code Seeter} instance.
+   *
+   * @param args Use {@code -h} to list the supported options
+   * @throws IOException If the servSock could not be created
+   */
+  public static void main(final String[] args) throws IOException {
+<span class="nc" id="L208">    final String help</span>
+        = &quot;Usage:  java [-cp ...] sep.seeter.server.Server [-s] port\n&quot;
+        + &quot;            --silent -s  Suppress debug messages\n&quot;
+        + &quot;            --help   -h  Print this help message&quot;;
+<span class="nc" id="L212">    if (Arrays.stream(args)</span>
+<span class="nc bnc" id="L213" title="All 6 branches missed.">        .anyMatch(x -&gt; &quot;--help&quot;.equals(x) || &quot;-h&quot;.equals(x))) {</span>
+<span class="nc" id="L214">      System.out.println(help);</span>
+<span class="nc" id="L215">      System.exit(0);</span>
+<span class="nc bnc" id="L216" title="All 2 branches missed.">    } else if (args.length &lt; 1) {</span>
+<span class="nc" id="L217">      System.err.println(help);</span>
+<span class="nc" id="L218">      System.exit(1);</span>
+    }
+<span class="nc" id="L220">    final int port = Integer.parseInt(args[args.length - 1]);</span>
+<span class="nc bnc" id="L221" title="All 2 branches missed.">    final boolean silent = args.length &gt; 1</span>
+<span class="nc bnc" id="L222" title="All 2 branches missed.">        &amp;&amp; Stream.of(&quot;--silent&quot;, &quot;-s&quot;).anyMatch(x -&gt; x.equals(args[0]));</span>
+<span class="nc bnc" id="L223" title="All 2 branches missed.">    try (final Server s = new Server(!silent, port)) {</span>
+<span class="nc" id="L224">      s.run();</span>
+<span class="nc" id="L225">    }</span>
+<span class="nc" id="L226">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>

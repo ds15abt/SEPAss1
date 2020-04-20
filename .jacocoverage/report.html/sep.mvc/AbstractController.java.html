@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>AbstractController.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;RecommendedRedesign&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">sep.mvc</a> &gt; <span class="el_source">AbstractController.java</span></div><h1>AbstractController.java</h1><pre class="source lang-java linenums">/*
+ * This file is part of the base framework given to you for the 6COM1038 
+ * Software Engineering Practice coursework assessment -- a text-based command
+ * line tweeter application.
+ * 
+ * Generally, you do not need to, and should not, modify this file.  Any 
+ * testing of your submitted coded will, in the first instance, be against the
+ * base framework as provided.  
+ * 
+ * You may, however, wish to modify the base framework classes as part of your 
+ * debugging or for your own interest -- that is fine, but you should ensure 
+ * any such modifications are compatible with the existing base code, i.e., 
+ * with regards to compilation and functionality.  You are advised to conduct 
+ * your own tests against the base framework.
+ */
+package sep.mvc;
+
+/**
+ * A Controller is used to assemble the
+ * {@linkplain sep.mvc.AbstractModel Model} and
+ * {@linkplain sep.mvc.AbstractView view}(s), and is responsible for
+ * coordinating operations between them to form the application as a whole. The
+ * Controller is the central component that processes commands (from the
+ * user-driven view) and other events of interest (&lt;i&gt;e.g.&lt;/i&gt;, network I/O) by
+ * performing operations on the Model and view as appropriate.
+ * &lt;p&gt;
+ * Alternative application behaviours can be realised by different Controllers
+ * over the same Model and views. Likewise, a Controller should be able to
+ * handle any view that observes a compatible command protocol.
+ * &lt;p&gt;
+ * The binding of the Model and view to this Controller is fixed on creation.
+ *
+ * @author rhu1 {@literal &lt;r.z.h.hu@herts.ac.uk&gt;}
+ */
+public abstract class AbstractController {
+
+  private final AbstractModel model;
+  private final AbstractView view;
+
+  /**
+   * Binds the supplied Model and View to this Controller. Also implicitly
+   * registers this Controller to the supplied View - this Controller will be
+   * shutdown if a Controller has already been bound to the View.
+   *
+   * @param model The Model
+   * @param view  The View
+   *
+   * @see sep.mvc.AbstractView#setController(sep.mvc.AbstractController)
+   */
+  protected AbstractController(final AbstractModel model,
+<span class="nc" id="L51">      final AbstractView view) {</span>
+<span class="nc" id="L52">    this.model = model;</span>
+<span class="nc" id="L53">    this.view = view;</span>
+<span class="nc" id="L54">    view.setController(this);</span>
+<span class="nc" id="L55">  }</span>
+
+  /**
+   * Shutdown this Controller, and the MVC application as whole. Implicitly
+   * closes the bound View.
+   */
+  public abstract void shutdown();
+
+  /* Getters */
+
+  /**
+   * Get the Model bound to this Controller upon creation.
+   *
+   * @return The bound model
+   */
+  protected AbstractModel getModel() {
+<span class="nc" id="L71">    return this.model;</span>
+  }
+
+  /**
+   * Get the View bound to this Controller upon creation.
+   *
+   * @return The bound View
+   */
+  protected AbstractView getView() {
+<span class="nc" id="L80">    return this.view;</span>
+  }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>

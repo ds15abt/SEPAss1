@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>ServerThread.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;RecommendedRedesign&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">sep.seeter.server</a> &gt; <span class="el_source">ServerThread.java</span></div><h1>ServerThread.java</h1><pre class="source lang-java linenums">/*
+ * This file is part of the base framework given to you for the 6COM1038 
+ * Software Engineering Practice coursework assessment -- a text-based command
+ * line tweeter application.
+ * 
+ * Generally, you do not need to, and should not, modify this file.  Any 
+ * testing of your submitted coded will, in the first instance, be against the
+ * base framework as provided.  
+ * 
+ * You may, however, wish to modify the base framework classes as part of your 
+ * debugging or for your own interest -- that is fine, but you should ensure 
+ * any such modifications are compatible with the existing base code, i.e., 
+ * with regards to compilation and functionality.  You are advised to conduct 
+ * your own tests against the base framework.
+ */
+package sep.seeter.server;
+
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import sep.seeter.net.message.Bye;
+import sep.seeter.net.message.Message;
+import sep.seeter.net.message.TopicsReply;
+import sep.seeter.net.message.SeetsReq;
+import sep.seeter.net.message.SeetsReply;
+import sep.seeter.net.message.Publish;
+import sep.seeter.net.message.TopicsReq;
+
+/**
+ * To be spawned by {@link sep.seeter.server.Server} to serve one Seeter client
+ * concurrently with any other clients.
+ *
+ * @author rhu1 {@literal &lt;r.z.h.hu@herts.ac.uk&gt;}
+ */
+public class ServerThread extends Thread {
+
+  private final Server server;
+  private final Socket sock;
+  private final ObjectInputStream in;
+  private final ObjectOutputStream out;
+
+  /**
+   * Create a thread object for serving the connected Seeter client.
+   *
+   * @param server The {@link sep.seeter.server.Server} that is spawning this
+   *               thread
+   * @param sock   The server-side {@link java.net.Socket} of the channel
+   *               established with the client
+   * @throws IOException If I/O streams cannot be established with the client
+   *                     over the socket.
+   */
+  public ServerThread(final Server server, final Socket sock) throws
+<span class="nc" id="L59">      IOException {</span>
+<span class="nc" id="L60">    this.server = server;</span>
+<span class="nc" id="L61">    this.sock = sock;</span>
+<span class="nc" id="L62">    this.in = new ObjectInputStream(sock.getInputStream());</span>
+<span class="nc" id="L63">    this.out = new ObjectOutputStream(sock.getOutputStream());</span>
+<span class="nc" id="L64">  }</span>
+
+  @Override
+  public void run() {
+<span class="nc" id="L68">    debugPrintln(&quot;Accepted connection.&quot;);</span>
+    try {
+      while (true) {
+<span class="nc" id="L71">        Object read = this.in.readObject();</span>
+<span class="nc" id="L72">        debugPrintln(&quot;Received: &quot; + read);</span>
+<span class="nc bnc" id="L73" title="All 2 branches missed.">        if (!(read instanceof Message)) {  // Could replace by a separate header communication</span>
+<span class="nc" id="L74">          throw new IOException(getFormattedClientAddr()</span>
+<span class="nc" id="L75">              + &quot;Client error, invalid message: &quot; + read.getClass());</span>
+        }
+<span class="nc bnc" id="L77" title="All 2 branches missed.">        if (handleMessage((Message) read)) {</span>
+<span class="nc" id="L78">          return;</span>
+        }
+<span class="nc" id="L80">      }</span>
+<span class="nc" id="L81">    } catch (IOException | ClassNotFoundException ex) {</span>
+<span class="nc" id="L82">      final String msg = getFormattedClientAddr() + &quot; I/O error: &quot;</span>
+<span class="nc" id="L83">          + ex.getMessage() + &quot; (&quot; + ex.getClass().getSimpleName() + &quot;)&quot;;</span>
+<span class="nc" id="L84">      Logger.getLogger(ServerThread.class.getName()).log(Level.SEVERE, msg, ex);</span>
+    } finally {
+<span class="nc" id="L86">      close();</span>
+<span class="nc" id="L87">      debugPrintln(&quot;Session ended.&quot;);</span>
+<span class="nc" id="L88">    }</span>
+<span class="nc" id="L89">  }</span>
+
+  // @return  is terminal
+  private boolean handleMessage(final Message msg) throws IOException {
+<span class="nc bnc" id="L93" title="All 18 branches missed.">    switch (msg.getHeader()) {</span>
+      case Bye.HEADER:
+<span class="nc" id="L95">        return true;  // close done by calling method (run) finally</span>
+      case TopicsReq.HEADER: {
+<span class="nc" id="L97">        final Message rep = new TopicsReply(this.server.getTopics());  // Non-empty</span>
+<span class="nc" id="L98">        this.out.reset();  // O/w seems to cache the List&lt;Seet&gt; instance reused throughout</span>
+<span class="nc" id="L99">        this.out.writeObject(rep);</span>
+<span class="nc" id="L100">        this.out.flush();</span>
+<span class="nc" id="L101">        debugPrintln(&quot;Sent: &quot; + rep);</span>
+<span class="nc" id="L102">        break;</span>
+      }
+      case SeetsReq.HEADER: {
+<span class="nc" id="L105">        final SeetsReq req = (SeetsReq) msg;  // pub.index &gt;= 0</span>
+<span class="nc" id="L106">        final List&lt;Pair&lt;String, String&gt;&gt; seets</span>
+<span class="nc" id="L107">            = this.server.getSeets(req.topic, req.index);</span>
+<span class="nc" id="L108">        final Pair&lt;Stream&lt;String&gt;, Stream&lt;String&gt;&gt; reduce</span>
+<span class="nc" id="L109">            = seets.stream().map(x -&gt; new Pair&lt;&gt;(</span>
+<span class="nc" id="L110">            Stream.of(x.left), Stream.of(x.right)))</span>
+<span class="nc" id="L111">                .reduce(new Pair&lt;&gt;(Stream.empty(), Stream.empty()),</span>
+<span class="nc" id="L112">                    (z, y) -&gt; new Pair&lt;&gt;(</span>
+<span class="nc" id="L113">                        Stream.concat(z.left, y.left),</span>
+<span class="nc" id="L114">                        Stream.concat(z.right, y.right)));</span>
+<span class="nc" id="L115">        final Pair&lt;List&lt;String&gt;, List&lt;String&gt;&gt; pair</span>
+<span class="nc" id="L116">            = new Pair&lt;&gt;(reduce.left.collect(Collectors.toList()),</span>
+<span class="nc" id="L117">                reduce.right.collect(Collectors.toList()));</span>
+<span class="nc" id="L118">        final Message rep = new SeetsReply(pair.left, pair.right);</span>
+<span class="nc" id="L119">        this.out.reset();  // O/w seems to cache the List&lt;Seet&gt; instance reused throughout</span>
+<span class="nc" id="L120">        this.out.writeObject(rep);</span>
+<span class="nc" id="L121">        this.out.flush();</span>
+<span class="nc" id="L122">        debugPrintln(&quot;Sent: &quot; + rep);</span>
+<span class="nc" id="L123">        break;</span>
+      }
+      case Publish.HEADER: {
+<span class="nc" id="L126">        final Publish pub = (Publish) msg;</span>
+<span class="nc" id="L127">        Message.isValidUserId(pub.user);  // Only needed if Message further subclassed</span>
+<span class="nc" id="L128">        pub.topics.forEach(Message::isValidTopic);</span>
+<span class="nc" id="L129">        pub.lines.stream().forEach(Message::isValidBody);</span>
+<span class="nc" id="L130">        final List&lt;Pair&lt;String, String&gt;&gt; seets</span>
+<span class="nc" id="L131">            = pub.lines.stream().map(x -&gt; new Pair&lt;&gt;(pub.user, x))</span>
+<span class="nc" id="L132">                .collect(Collectors.toList());</span>
+<span class="nc" id="L133">        this.server.addSeets(pub.topics, seets);</span>
+<span class="nc" id="L134">        break;</span>
+      }
+      default:
+<span class="nc" id="L137">        throw new IOException(getFormattedClientAddr()</span>
+<span class="nc" id="L138">            + &quot;Client error, unexpected message: &quot; + msg.getClass());</span>
+    }
+<span class="nc" id="L140">    return false;</span>
+  }
+
+  private void close() {
+<span class="nc" id="L144">    debugPrintln(&quot;Closing connection.&quot;);</span>
+<span class="nc" id="L145">    IOException err = null;</span>
+    try {
+<span class="nc" id="L147">      this.in.close();</span>
+<span class="nc" id="L148">    } catch (IOException ex) {</span>
+<span class="nc" id="L149">      err = ex;  // msg currently null</span>
+<span class="nc" id="L150">    }</span>
+    try {
+<span class="nc" id="L152">      this.out.close();</span>
+<span class="nc" id="L153">    } catch (IOException ex) {</span>
+<span class="nc bnc" id="L154" title="All 2 branches missed.">      if (err == null) {</span>
+<span class="nc" id="L155">        err = ex;</span>
+      }
+<span class="nc" id="L157">    }</span>
+    try {
+<span class="nc" id="L159">      this.sock.close();</span>
+<span class="nc" id="L160">    } catch (IOException ex) {</span>
+<span class="nc bnc" id="L161" title="All 2 branches missed.">      if (err == null) {</span>
+<span class="nc" id="L162">        err = ex;</span>
+      }
+<span class="nc" id="L164">    }</span>
+<span class="nc bnc" id="L165" title="All 2 branches missed.">    if (err != null) {</span>
+<span class="nc" id="L166">      final String msg = &quot;Connection close error: &quot; + err.getMessage();</span>
+<span class="nc" id="L167">      Logger.getLogger(ServerThread.class.getName()).log(Level.SEVERE, msg);</span>
+    }
+<span class="nc" id="L169">  }</span>
+
+  private void debugPrintln(final String msg) {
+<span class="nc bnc" id="L172" title="All 2 branches missed.">    if (this.server.debug) {</span>
+<span class="nc" id="L173">      System.out.println(getFormattedClientAddr() + &quot; &quot; + msg);</span>
+    }
+<span class="nc" id="L175">  }</span>
+
+  private String getFormattedClientAddr() {
+<span class="nc" id="L178">    return &quot;(Client &quot; + sock.getRemoteSocketAddress() + &quot;)&quot;;</span>
+  }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>
