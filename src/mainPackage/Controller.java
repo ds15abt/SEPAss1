@@ -1,4 +1,8 @@
+package mainPackage;
 
+
+import mainPackage.Command;
+import mainPackage.Client;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.io.BufferedReader;
 import java.io.IOException;

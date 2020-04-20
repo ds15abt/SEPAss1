@@ -1,4 +1,8 @@
+package mainPackage;
 
+
+import mainPackage.Command;
+import mainPackage.Client;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;

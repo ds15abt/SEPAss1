@@ -19,6 +19,7 @@ public class ComposeCommandTest {
     
     @Before
     public void setUp() {
+        
     }
 
     /**

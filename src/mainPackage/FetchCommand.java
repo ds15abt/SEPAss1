@@ -1,4 +1,8 @@
+package mainPackage;
 
+
+import mainPackage.Command;
+import mainPackage.Client;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
