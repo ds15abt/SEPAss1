@@ -24,7 +24,6 @@ public class BodyCommand implements Command {
 
     String[] rawArgs;
 //    List<String> draftLines = new LinkedList<>();
-    Controller controller;
 
     public BodyCommand(String[] rawArgs) {
         this.rawArgs = rawArgs;
@@ -37,7 +36,7 @@ public class BodyCommand implements Command {
             String line = Arrays.stream(rawArgs).
                     collect(Collectors.joining());
 
-            controller.getDraftLines().add(line);
+            client.draftLines.add(line);
 
         } catch (Exception E) {
 

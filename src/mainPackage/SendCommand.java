@@ -24,7 +24,6 @@ public class SendCommand implements Command {
     String[] rawArgs;
     CLFormatter helper;
 //    List<String> draftLines = new LinkedList<>();
-    Controller controller;
 
     public SendCommand(String[] rawArgs) throws IOException {
         helper.chan.send(new SeetsReq(rawArgs[0]));
@@ -36,7 +35,7 @@ public class SendCommand implements Command {
 
         try {
 
-            helper.chan.send(new Publish(client.getUser(), client.draftTopic, controller.draftLines));
+            helper.chan.send(new Publish(client.getUser(), client.draftTopic, client.draftLines));
 
         } catch (IOException ex) {
             Logger.getLogger(SendCommand.class.getName()).log(Level.SEVERE, null, ex);

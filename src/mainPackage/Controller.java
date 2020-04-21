@@ -11,19 +11,16 @@ import java.util.List;
 import sep.seeter.net.message.Bye;
 
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-/**
+ this Class contains the loop and also the linked list.
+it runs with graceful error avoidance but clunky functionality
  *
- * @author user1
+ * @author dylan
  */
 public class Controller {
 
     private Parser parser;
     private Client client;
-    LinkedList<String> draftLines = new LinkedList<>();
+//    LinkedList<String> draftLines = new LinkedList<>();
 
     public Controller(Parser parser, Client client) {
         this.parser = parser;
@@ -69,12 +66,11 @@ public class Controller {
     void loop(CLFormatter helper, BufferedReader reader) throws IOException,
             ClassNotFoundException {
 
-//    // The app is in one of two states: "Main" or "Drafting"
         String state = "Main";  // Initial state
 //
 //    // Holds the current draft data when in the "Drafting" state
 //    String draftTopic = null;
-//    List<String> draftLines = new LinkedList<>();
+//        List<String> draftLines = new LinkedList<>();
 
         // The loop
         for (boolean done = false; !done;) {
@@ -84,12 +80,13 @@ public class Controller {
                 System.out.print(helper.formatMainMenuPrompt());
             } else {  // state = "Drafting"
                 System.out.print(helper.
-                        formatDraftingMenuPrompt(client.getDraftTopic(), draftLines));
+                        formatDraftingMenuPrompt(client.getDraftTopic(), client.draftLines));
 
             }
 
             parser.userInput(reader);
 
+            // this is where the program gets user input and goes to parser class to determine next action
             Command command = parser.get();
             if (command == null) {
                 System.out.println("Error");
@@ -102,9 +99,8 @@ public class Controller {
         return;
     }
 
-    public List getDraftLines() {
-        return draftLines;
-
-    }
-
+//    public void addDraftLines(String line) {
+//        draftLines.add(line);
+//
+//    }
 }

@@ -71,7 +71,7 @@ public class Client {
     private int port;
     private String state;
     String draftTopic;
-
+    LinkedList<String> draftLines = new LinkedList<>();
     private Parser parser;
 
     boolean printSplash = true;
