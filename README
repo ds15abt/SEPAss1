@@ -1,2 +1,3 @@
-To run this program you must pass 3 arguments either pre-run set by client or in command line input.
+To run this program you must pass 3 arguments to the main method inside the Client class, either pre-run set arguments by a client(IDE) 
+or in command line input.
 These are 3 arguments must be 2 Strings and an integer: {String user, String Host, int port}
