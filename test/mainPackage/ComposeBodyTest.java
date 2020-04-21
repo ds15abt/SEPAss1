@@ -23,7 +23,7 @@ public class ComposeBodyTest {
 
     @BeforeClass
     public static void setUpClass() throws IOException {
-        server = new Server(8888);
+        server = new Server(1234);
         new Thread(() -> server.run()).start();
     }
 
@@ -49,26 +49,36 @@ public class ComposeBodyTest {
         System.setIn(in);
 
         //Run the client
+        String user = "Dylan";
+        String host = "localHost";
+        int port = Integer.parseInt("1234");
+        Client client = new Client(user, host, port);
+
+        Parser parser = new Parser(client);
+        controller = new Controller(parser, client);
+
+        System.setOut(new PrintStream(printed));
+
     }
 
     //REFERENCE TEST
     @Test
     public void TestBodyCommand() throws IOException {
-        inputMethod("compose test\n"
+        inputMethod("compose topic\n"
                 + "body");
-        Assert.assertTrue(printed.toString().contains("Drafting: #test"));
+        Assert.assertTrue(printed.toString().contains("Drafting: #topic"));
     }
 
-    @Test
-    public void thisbodytestmet() throws UnsupportedEncodingException, IOException {
-
-        ByteArrayInputStream in = new ByteArrayInputStream("compose working\n send it \nexit".getBytes("UTF-8"));
-
-        System.setIn(in);
-        Client.main(new String[]{"Dylan", "localHost", "8888"});
-
-        String str = printed.toString("UTF-8");
-
-        assertTrue(str.contains("Drafting: #test"));
-    }
+//    @Test
+//    public void thisbodytestmet() throws UnsupportedEncodingException, IOException {
+//
+//        ByteArrayInputStream in = new ByteArrayInputStream("compose working\n send it \nexit".getBytes("UTF-8"));
+//
+//        System.setIn(in);
+//        Client.main(new String[]{"Dylan", "localHost", "8888"});
+//
+//        String str = printed.toString("UTF-8");
+//
+//        assertTrue(str.contains("Drafting: #test"));
+//    }
 }
