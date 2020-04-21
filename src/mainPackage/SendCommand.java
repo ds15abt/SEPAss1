@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import sep.seeter.net.message.Message;
 import sep.seeter.net.message.Publish;
 import sep.seeter.net.message.SeetsReq;
 
@@ -23,11 +24,15 @@ public class SendCommand implements Command {
 
     String[] rawArgs;
     CLFormatter helper;
-//    List<String> draftLines = new LinkedList<>();
 
-    public SendCommand(String[] rawArgs) throws IOException {
-        helper.chan.send(new SeetsReq(rawArgs[0]));
-        this.rawArgs = rawArgs;
+//    List<String> draftLines = new LinkedList<>();
+    public SendCommand(String user, String draftTopic, List<String> rawArgs) throws IOException {
+
+        List<String> draft = new LinkedList();
+        draft.add(rawArgs.get(0));
+
+        System.out.println(draft);
+        helper.chan.send(new Publish(user, draftTopic, draft));
     }
 
     @Override

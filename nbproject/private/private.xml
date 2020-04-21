@@ -3,18 +3,16 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/E:/SEPass3/SEPAss1/src/sep/mvc/AbstractModel.java</file>
-            <file>file:/E:/SEPass3/SEPAss1/src/mainPackage/Controller.java</file>
-            <file>file:/E:/SEPass3/SEPAss1/src/mainPackage/CLFormatter.java</file>
-            <file>file:/E:/SEPass3/SEPAss1/src/mainPackage/Parser.java</file>
-            <file>file:/E:/SEPass3/SEPAss1/src/mainPackage/ComposeCommand.java</file>
-            <file>file:/E:/SEPass3/SEPAss1/test/ComposeCommandTest.java</file>
-            <file>file:/E:/SEPass3/SEPAss1/src/mainPackage/FetchCommand.java</file>
-            <file>file:/E:/SEPass3/SEPAss1/src/mainPackage/BodyCommand.java</file>
-            <file>file:/E:/SEPass3/SEPAss1/test/ClientTest.java</file>
-            <file>file:/E:/SEPass3/SEPAss1/src/mainPackage/SendCommand.java</file>
-            <file>file:/E:/SEPass3/SEPAss1/src/mainPackage/Client.java</file>
-            <file>file:/E:/SEPass3/SEPAss1/src/sep/mvc/AbstractController.java</file>
+            <file>file:/C:/Seeter/SEPAss1/test/mainPackage/ComposeBodyTest.java</file>
+            <file>file:/C:/Seeter/SEPAss1/test/mainPackage/ClientTest.java</file>
+            <file>file:/C:/Seeter/SEPAss1/test/mainPackage/ComposeCommandTest.java</file>
+            <file>file:/C:/Seeter/SEPAss1/src/mainPackage/Client.java</file>
+            <file>file:/C:/Seeter/SEPAss1/src/mainPackage/Parser.java</file>
+            <file>file:/C:/Seeter/SEPAss1/src/mainPackage/Controller.java</file>
+            <file>file:/C:/Seeter/SEPAss1/src/mainPackage/CLFormatter.java</file>
+            <file>file:/C:/Seeter/SEPAss1/src/mainPackage/BodyCommand.java</file>
+            <file>file:/C:/Seeter/SEPAss1/src/mainPackage/FetchCommand.java</file>
+            <file>file:/C:/Seeter/SEPAss1/src/mainPackage/SendCommand.java</file>
         </group>
     </open-files>
 </project-private>

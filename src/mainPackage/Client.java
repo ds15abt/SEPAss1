@@ -85,6 +85,22 @@ public class Client {
 
     }
 
+    public String getUser() {
+        return user;
+    }
+
+    public List getDraftLines() {
+        return draftLines;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public String getDraftTopic() {
+        return draftTopic;
+    }
+
     public static void main(String[] args) throws IOException {
         String user = args[0];
         String host = args[1];
@@ -97,14 +113,6 @@ public class Client {
         controller.run();
     }
 
-    public String getDraftTopic() {
-        return draftTopic;
-    }
-
-//  public void setDraftTopic(){
-//      draftTopic= rawArgs[0];
-//      
-//  }
     public void setStateDrafting() {
         state = "Drafting";
     }
@@ -116,10 +124,6 @@ public class Client {
     public String getState() {
 
         return state;
-    }
-
-    public String getUser() {
-        return user;
     }
 
     public String getHost() {

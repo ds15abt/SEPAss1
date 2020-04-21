@@ -23,8 +23,8 @@ import java.util.stream.Stream;
 
 /**
  * A {@code PUB} message: tells a {@link sep.seeter.server.Server} instance to
- * append a list of seets from a user to each (possibly new) topic in the set
- * of topics.
+ * append a list of seets from a user to each (possibly new) topic in the set of
+ * topics.
  * <p>
  * Instances of this class are immutable.
  *
@@ -32,98 +32,100 @@ import java.util.stream.Stream;
  */
 public final class Publish implements Message {
 
-  private static final long serialVersionUID = 1L;  // Generated
+    private static final long serialVersionUID = 1L;  // Generated
 
-  /**
-   * The header code.
-   */
-  public static final String HEADER = "PUB";
+    /**
+     * The header code.
+     */
+    public static final String HEADER = "PUB";
 
-  /**
-   * The name of the user publishing these seets.
-   *
-   * @see sep.seeter.net.message.Message#isValidUserId(String)
-   */
-  public final String user;
+    /**
+     * The name of the user publishing these seets.
+     *
+     * @see sep.seeter.net.message.Message#isValidUserId(String)
+     */
+    public final String user;
 
-  /**
-   * The non-empty set of target topics. The set is not modifiable.
-   *
-   * @see sep.seeter.net.message.Message#isValidTopic(String)
-   */
-  public final Set<String> topics;
+    /**
+     * The non-empty set of target topics. The set is not modifiable.
+     *
+     * @see sep.seeter.net.message.Message#isValidTopic(String)
+     */
+    public final Set<String> topics;
 
-  /**
-   * The non-empty list of seet body lines. The list is not modifiable.
-   *
-   * @see sep.seeter.net.message.Message#isValidBody(String)
-   */
-  public final List<String> lines;
+    /**
+     * The non-empty list of seet body lines. The list is not modifiable.
+     *
+     * @see sep.seeter.net.message.Message#isValidBody(String)
+     */
+    public final List<String> lines;
 
-  /**
-   * Create a {@code PUB} message for a single topic. This is equivalent to
-   * {@linkplain #Publish(String, Set, List)} where the {@code Set} is a
-   * singleton containing {@code topic}.
-   *
-   * @param user  A user name
-   * @param topic The target topic
-   * @param lines A non-empty list of seet body lines to append to each topic
-   *              non-empty
-   * @throws IllegalArgumentException If topics or lines is empty, or any of
-   *                                  the user name, topics or body lines are
-   *                                  invalid
-   *
-   * @see sep.seeter.net.message.Message#isValidUserId(String)
-   * @see sep.seeter.net.message.Message#isValidTopic(String)
-   * @see sep.seeter.net.message.Message#isValidBody(String)
-   */
-  public Publish(final String user, final String topic,
-      final List<String> lines) {
-    this(user, Stream.of(topic).collect(Collectors.toSet()), lines);
-  }
-
-  /**
-   * Create a {@code PUB} message.
-   *
-   * @param user   A user name
-   * @param topics A non-empty set of target topics
-   * @param lines  A non-empty list of seet body lines to append to each topic
-   *               non-empty
-   * @throws IllegalArgumentException If topics or lines is empty, or any of
-   *                                  the user name, topics or body lines are
-   *                                  invalid
-   *
-   * @see sep.seeter.net.message.Message#isValidUserId(String)
-   * @see sep.seeter.net.message.Message#isValidTopic(String)
-   * @see sep.seeter.net.message.Message#isValidBody(String)
-   */
-  public Publish(final String user, final Set<String> topics,
-      final List<String> lines) {
-    if (topics.isEmpty()) {
-      throw new IllegalArgumentException("topics set should be non-empty.");
+    /**
+     * Create a {@code PUB} message for a single topic. This is equivalent to
+     * {@linkplain #Publish(String, Set, List)} where the {@code Set} is a
+     * singleton containing {@code topic}.
+     *
+     * @param user A user name
+     * @param topic The target topic
+     * @param lines A non-empty list of seet body lines to append to each topic
+     * non-empty
+     * @throws IllegalArgumentException If topics or lines is empty, or any of
+     * the user name, topics or body lines are invalid
+     *
+     * @see sep.seeter.net.message.Message#isValidUserId(String)
+     * @see sep.seeter.net.message.Message#isValidTopic(String)
+     * @see sep.seeter.net.message.Message#isValidBody(String)
+     */
+    public Publish(final String user, final String topic,
+            final List<String> lines) {
+        this(user, Stream.of(topic).collect(Collectors.toSet()), lines);
     }
-    if (lines.isEmpty()) {
-      throw new IllegalArgumentException("seets list should be non-empty.");
+
+    /**
+     * Create a {@code PUB} message.
+     *
+     * @param user A user name
+     * @param topics A non-empty set of target topics
+     * @param lines A non-empty list of seet body lines to append to each topic
+     * non-empty
+     * @throws IllegalArgumentException If topics or lines is empty, or any of
+     * the user name, topics or body lines are invalid
+     *
+     * @see sep.seeter.net.message.Message#isValidUserId(String)
+     * @see sep.seeter.net.message.Message#isValidTopic(String)
+     * @see sep.seeter.net.message.Message#isValidBody(String)
+     */
+    public Publish(final String user, final Set<String> topics,
+            final List<String> lines) {
+        if (topics.isEmpty()) {
+            throw new IllegalArgumentException("topics set should be non-empty.");
+        }
+        if (lines.isEmpty()) {
+            throw new IllegalArgumentException("seets list should be non-empty.");
+        }
+        Message.isValidUserId(user);
+        topics.forEach(Message::isValidTopic);
+        lines.forEach(Message::isValidBody);
+        this.user = user;
+        this.topics = Collections.unmodifiableSet(topics);
+        this.lines = Collections.unmodifiableList(lines);
     }
-    Message.isValidUserId(user);
-    topics.forEach(Message::isValidTopic);
-    lines.forEach(Message::isValidBody);
-    this.user = user;
-    this.topics = Collections.unmodifiableSet(topics);
-    this.lines = Collections.unmodifiableList(lines);
-  }
 
-  @Override
-  public String getHeader() {
-    return Publish.HEADER;
-  }
+    public Publish(String user, String draftTopic, String rawArg) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 
-  @Override
-  public String toString() {
-    return Publish.HEADER
-        + this.topics.stream().map(x -> " #" + x)
-            .collect(Collectors.joining())
-        + this.lines.stream().map(x -> " @" + this.user + " " + x)
-            .collect(Collectors.joining());
-  }
+    @Override
+    public String getHeader() {
+        return Publish.HEADER;
+    }
+
+    @Override
+    public String toString() {
+        return Publish.HEADER
+                + this.topics.stream().map(x -> " #" + x)
+                        .collect(Collectors.joining())
+                + this.lines.stream().map(x -> " @" + this.user + " " + x)
+                        .collect(Collectors.joining());
+    }
 }
