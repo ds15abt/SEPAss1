@@ -77,7 +77,6 @@ public class Client {
     boolean printSplash = true;
 
     public Client(String user, String host, int port) {
-        this.parser = parser;
 
         state = "Main";
         this.user = user;
