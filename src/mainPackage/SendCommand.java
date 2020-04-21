@@ -43,7 +43,7 @@ public class SendCommand implements Command {
         }
 
         client.setStateMain();
-        client.draftTopic.add("Sent.");
+        client.draftTopic = null;
 
     }
 
