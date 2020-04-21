@@ -1,6 +1,5 @@
 package mainPackage;
 
-
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,12 +14,12 @@ import sep.seeter.net.message.SeetsReply;
 import sep.seeter.net.message.SeetsReq;
 
 /**
- * This class is an initial work-in-progress prototype for a command line
- * Seeter client. It has been rather hastily hacked together, as often the case
- * with early exploratory coding, and it is incomplete and buggy. However, it
- * does compile and run, and basic functionality, such as sending and fetching
- * seets to and from an instance of {@link sep.seeter.server.Server}, is
- * working. Try it!
+ * This class is an initial work-in-progress prototype for a command line Seeter
+ * client. It has been rather hastily hacked together, as often the case with
+ * early exploratory coding, and it is incomplete and buggy. However, it does
+ * compile and run, and basic functionality, such as sending and fetching seets
+ * to and from an instance of {@link sep.seeter.server.Server}, is working. Try
+ * it!
  * <p>
  * The arguments required to run the client correspond to the
  * {@link #set(String, String, int)} method: a user name, and the host name and
@@ -67,212 +66,69 @@ import sep.seeter.net.message.SeetsReq;
  */
 public class Client {
 
+    private String user;
+    private String host;
+    private int port;
+    private String state;
+    String draftTopic;
 
-  private String user;
-  private String host;
-  private int port;
-  private  String state;
-  String draftTopic;
+    private Parser parser;
 
-  private Parser parser; 
-
-  boolean printSplash = true;
+    boolean printSplash = true;
 
     public Client(String user, String host, int port) {
         this.parser = parser;
-        
+
         state = "Main";
         this.user = user;
         this.host = host;
         this.port = port;
-      
-  }
 
-  public static void main(String[] args) throws IOException {
-    String user = args[0];
-    String host = args[1];
-    int port = Integer.parseInt(args[2]);
-    Client client = new Client(user, host, port);
-    Parser parser = new Parser(client);
-    Controller controller = new Controller(parser, client);
+    }
+
+    public static void main(String[] args) throws IOException {
+        String user = args[0];
+        String host = args[1];
+        int port = Integer.parseInt(args[2]);
+        Client client = new Client(user, host, port);
+        Parser parser = new Parser(client);
+        Controller controller = new Controller(parser, client);
 //    client.set(user, host, port);
 //    client.run();
-    controller.run();
-  }
+        controller.run();
+    }
 
-  
-  public String getDraftTopic(){
-      return draftTopic;
-  }
-  
+    public String getDraftTopic() {
+        return draftTopic;
+    }
+
 //  public void setDraftTopic(){
 //      draftTopic= rawArgs[0];
 //      
 //  }
-  
-  public void setStateDrafting(){
-      state = "Drafting";
-  }
-  
-  public void setStateMain(){
-      state = "Main";
-  }
- 
-  
-  public String getState(){
-      
-      return state;
-  }
+    public void setStateDrafting() {
+        state = "Drafting";
+    }
 
-  public String getUser(){
-      return user;
-  }
-  
-  public String getHost(){
-      return host;
-  }
-  
-  public int getPort(){
-      return port;
-  }
-          
-  
+    public void setStateMain() {
+        state = "Main";
+    }
 
-//  public void set(String user, String host, int port) {
-//    this.user = user;
-//    this.host = host;
-//    this.port = port;
-//}
+    public String getState() {
 
-  // Run the client
-//  @SuppressFBWarnings(
-//      value = "DM_DEFAULT_ENCODING",
-//      justification = "When reading console, ignore default encoding warning")      
-//  void run() throws IOException {
-//
-//    BufferedReader reader = null;
-//    CLFormatter helper = null;
-//    try {
-//      reader = new BufferedReader(new InputStreamReader(System.in));
-//
-//      if (this.user.isEmpty() || this.host.isEmpty()) {
-//        System.err.println("User/host has not been set.");
-//        System.exit(1);
-//      }
-//      helper = new CLFormatter(this.host, this.port);
-//
-//      if (this.printSplash = true);
-//      {
-//        System.out.print(helper.helloUser(this.user));
-//      }
-//      loop(helper, reader);
-//    } catch (IOException | ClassNotFoundException ex) {
-//      throw new RuntimeException(ex);
-//    } finally {
-//      reader.close();
-//      if (helper.chan.isOpen()) {
-//        // If the channel is open, send Bye and close
-//        helper.chan.send(new Bye());
-//        helper.chan.close();
-//      }
-//    }
-//  }
-  
-  
-  
-  
-  
-  
+        return state;
+    }
 
-// Main loop: print user options, read user input and process
-//  void loop(CLFormatter helper, BufferedReader reader) throws IOException,
-//      ClassNotFoundException {
-//
-////    // The app is in one of two states: "Main" or "Drafting"
-////    String state = "Main";  // Initial state
-////
-////    // Holds the current draft data when in the "Drafting" state
-////    String draftTopic = null;
-//    List<String> draftLines = new LinkedList<>();
-//
-//    // The loop
-//    for (boolean done = false; !done;) {
-//        
-//
-//      // Print user options
-//      if (state.equals("Main")) {
-//        System.out.print(helper.formatMainMenuPrompt());
-//      } else {  // state = "Drafting"
-//        System.out.print(helper.
-//            formatDraftingMenuPrompt(draftTopic, draftLines));
-//      }
+    public String getUser() {
+        return user;
+    }
 
-//      // Read a line of user input
-//      String raw = reader.readLine();
-//      if (raw == null) {
-//        throw new IOException("Input stream closed while reading.");
-//      }
-//      // Trim leading/trailing white space, and split words according to spaces
-//      List<String> split = Arrays.stream(raw.trim().split("\\ "))
-//          .map(x -> x.trim()).collect(Collectors.toList());
-//      String cmd = split.remove(0);  // First word is the command keyword
-//      String[] rawArgs = split.toArray(new String[split.size()]);
-      // Remainder, if any, are arguments
+    public String getHost() {
+        return host;
+    }
 
-      // Process user input
-//      if ("exit".startsWith(cmd)) {
-//        // exit command applies in either state
-//        done = true;
-//      } // "Main" state commands
-//      
-//        parser.userInput(reader);
-//        
-//        Command command = parser.get();   
-//        command.execute(this);
-//        System.out.println("skrrrt");
-        
-//        if("exit".startsWith(cmd)) {
-//        done = true;
-//    }
-//      
-//       if (state.equals("Main")) {
-//        if ("compose".startsWith(cmd)) {
-//          // Switch to "Drafting" state and start a new "draft"
-//            state = "Drafting";
-//            draftTopic = rawArgs[0];
-//            
-//          
-//          
-//        } else if ("fetch".startsWith(cmd)) {
-//          // Fetch seets from server
-//          helper.chan.send(new SeetsReq(rawArgs[0]));
-//          SeetsReply rep = (SeetsReply) helper.chan.receive();
-//          System.out.print(
-//              helper.formatFetched(rawArgs[0], rep.users, rep.lines));
-//        } else {
-//          System.out.println("Could not parse command/args.");
-//        }
-//      } // "Drafting" state commands
-//      else if (state.equals("Drafting")) {
-//        if ("body".startsWith(cmd)) {
-//          // Add a seet body line
-//          String line = Arrays.stream(rawArgs).
-//              collect(Collectors.joining());
-//          draftLines.add(line);
-//        } else
-//            if ("send".startsWith(cmd)) {
-//          // Send drafted seets to the server, and go back to "Main" state
-//          helper.chan.send(new Publish(user, draftTopic, draftLines));
-//          state = "Main";
-//          draftTopic = null;
-//        } else {
-//          System.out.println("Could not parse command/args.");
-//        }
-//      } else {
-//        System.out.println("Could not parse command/args.");
-//      }
-//    }
-//    return;
-//  }
+    public int getPort() {
+        return port;
+    }
+
 }
-

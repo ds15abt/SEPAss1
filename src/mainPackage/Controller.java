@@ -23,7 +23,7 @@ public class Controller {
 
     private Parser parser;
     private Client client;
-    List<String> draftLines = new LinkedList<>();
+    LinkedList<String> draftLines = new LinkedList<>();
 
     public Controller(Parser parser, Client client) {
         this.parser = parser;
@@ -88,23 +88,6 @@ public class Controller {
 
             }
 
-//      // Read a line of user input
-//      String raw = reader.readLine();
-//      if (raw == null) {
-//        throw new IOException("Input stream closed while reading.");
-//      }
-//      // Trim leading/trailing white space, and split words according to spaces
-//      List<String> split = Arrays.stream(raw.trim().split("\\ "))
-//          .map(x -> x.trim()).collect(Collectors.toList());
-//      String cmd = split.remove(0);  // First word is the command keyword
-//      String[] rawArgs = split.toArray(new String[split.size()]);
-            // Remainder, if any, are arguments
-            // Process user input
-//      if ("exit".startsWith(cmd)) {
-//        // exit command applies in either state
-//        done = true;
-//      } // "Main" state commands
-//      
             parser.userInput(reader);
 
             Command command = parser.get();
@@ -114,47 +97,14 @@ public class Controller {
                 command.execute(client);
 
             }
-//        if("exit".startsWith(cmd)) {
-//        done = true;
-//    }
-//      
-//       if (state.equals("Main")) {
-//        if ("compose".startsWith(cmd)) {
-//          // Switch to "Drafting" state and start a new "draft"
-//            state = "Drafting";
-//            draftTopic = rawArgs[0];
-//            
-//          
-//          
-//        } else if ("fetch".startsWith(cmd)) {
-//          // Fetch seets from server
-//          helper.chan.send(new SeetsReq(rawArgs[0]));
-//          SeetsReply rep = (SeetsReply) helper.chan.receive();
-//          System.out.print(
-//              helper.formatFetched(rawArgs[0], rep.users, rep.lines));
-//        } else {
-//          System.out.println("Could not parse command/args.");
-//        }
-//      } // "Drafting" state commands
-//      else if (state.equals("Drafting")) {
-//        if ("body".startsWith(cmd)) {
-//          // Add a seet body line
-//          String line = Arrays.stream(rawArgs).
-//              collect(Collectors.joining());
-//          draftLines.add(line);
-//        } else if ("send".startsWith(cmd)) {
-//          // Send drafted seets to the server, and go back to "Main" state
-//          helper.chan.send(new Publish(user, draftTopic, draftLines));
-//          state = "Main";
-//          draftTopic = null;
-//        } else {
-//          System.out.println("Could not parse command/args.");
-//        }
-//      } else {
-//        System.out.println("Could not parse command/args.");
-//      }
+
         }
         return;
+    }
+
+    public List getDraftLines() {
+        return draftLines;
+
     }
 
 }

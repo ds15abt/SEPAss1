@@ -5,10 +5,16 @@ package mainPackage;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+import static com.sun.org.apache.xalan.internal.xsltc.compiler.util.Type.String;
+import static com.sun.tools.javac.jvm.PoolConstant.LoadableConstant.String;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.lang.String;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -27,12 +33,17 @@ public class BodyCommand implements Command {
 
     @Override
     public void execute(Client client) {
+        try {
+            String line = Arrays.stream(rawArgs).
+                    collect(Collectors.joining());
 
-        client.setStateDrafting();
+            controller.getDraftLines().add(line);
 
-        String line = Arrays.stream(rawArgs).
-                collect(Collectors.joining());
-        controller.draftLines.add(line);
+        } catch (Exception E) {
+
+            System.out.println("sorry I cant accept that body. ");
+            client.setStateDrafting();
+        }
 
     }
 }
