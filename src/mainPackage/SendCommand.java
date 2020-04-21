@@ -1,6 +1,5 @@
 package mainPackage;
 
-
 import mainPackage.Command;
 import mainPackage.Client;
 import java.io.IOException;
@@ -16,43 +15,36 @@ import sep.seeter.net.message.SeetsReq;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author user1
  */
 public class SendCommand implements Command {
-    String [] rawArgs;
+
+    String[] rawArgs;
     CLFormatter helper;
-    List<String> draftLines = new LinkedList<>();
-   
-    
-    public SendCommand (String[] rawArgs) throws IOException
-    {
+//    List<String> draftLines = new LinkedList<>();
+    Controller controller;
+
+    public SendCommand(String[] rawArgs) throws IOException {
         helper.chan.send(new SeetsReq(rawArgs[0]));
-        this.rawArgs= rawArgs;
+        this.rawArgs = rawArgs;
     }
 
     @Override
-    public void execute(Client client){
-        
+    public void execute(Client client) {
+
         try {
 
-            helper.chan.send(new Publish(client.getUser(), client.draftTopic, draftLines));
+            helper.chan.send(new Publish(client.getUser(), client.draftTopic, controller.draftLines));
 
-            
         } catch (IOException ex) {
             Logger.getLogger(SendCommand.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         client.setStateMain();
+        client.draftTopic.add("Sent.");
 
-        
-        client.draftTopic = null;
-
-        
     }
-    
-   
-    
+
 }

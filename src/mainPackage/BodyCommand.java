@@ -15,28 +15,24 @@ import java.util.stream.Collectors;
  * @author user1
  */
 public class BodyCommand implements Command {
-    
-    String [] rawArgs;
-    List<String> draftLines = new LinkedList<>();
-   
-    public BodyCommand(String [] rawArgs)
-    {
+
+    String[] rawArgs;
+//    List<String> draftLines = new LinkedList<>();
+    Controller controller;
+
+    public BodyCommand(String[] rawArgs) {
         this.rawArgs = rawArgs;
-    
+
     }
 
-        @Override
-    public void execute(Client client){
-        
+    @Override
+    public void execute(Client client) {
 
         client.setStateDrafting();
 
-        
         String line = Arrays.stream(rawArgs).
-        collect(Collectors.joining());
-        draftLines.add(line);
+                collect(Collectors.joining());
+        controller.draftLines.add(line);
 
-
-        
     }
 }
