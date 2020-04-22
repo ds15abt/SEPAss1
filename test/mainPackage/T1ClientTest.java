@@ -4,7 +4,7 @@
  */
 package mainPackage;
 
-import java.io.ByteArrayInputStream;
+//import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -19,7 +19,7 @@ import sep.seeter.server.Server;
  *
  * @author user1
  */
-public class StateMainTest {
+public class T1ClientTest {
 
     private static Server server;
     private ByteArrayOutputStream printed = new ByteArrayOutputStream();
