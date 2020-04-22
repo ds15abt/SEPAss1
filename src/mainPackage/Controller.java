@@ -53,7 +53,9 @@ public class Controller {
         } catch (IOException | ClassNotFoundException ex) {
             throw new RuntimeException(ex);
         } finally {
-            reader.close();
+            if (!(reader == null)) {
+                reader.close();
+            }
             if (helper.chan.isOpen()) {
                 // If the channel is open, send Bye and close
                 helper.chan.send(new Bye());

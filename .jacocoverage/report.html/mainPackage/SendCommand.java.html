@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import sep.seeter.net.message.Message;
 import sep.seeter.net.message.Publish;
 import sep.seeter.net.message.SeetsReq;
 
@@ -23,28 +24,32 @@ public class SendCommand implements Command {
 
     String[] rawArgs;
     CLFormatter helper;
-//    List&lt;String&gt; draftLines = new LinkedList&lt;&gt;();
 
-<span class="nc" id="L28">    public SendCommand(String[] rawArgs) throws IOException {</span>
-<span class="nc" id="L29">        helper.chan.send(new SeetsReq(rawArgs[0]));</span>
-<span class="nc" id="L30">        this.rawArgs = rawArgs;</span>
-<span class="nc" id="L31">    }</span>
+//    List&lt;String&gt; draftLines = new LinkedList&lt;&gt;();
+<span class="nc" id="L29">    public SendCommand(String user, String draftTopic, List&lt;String&gt; rawArgs) throws IOException {</span>
+
+<span class="nc" id="L31">        List&lt;String&gt; draft = new LinkedList();</span>
+<span class="nc" id="L32">        draft.add(rawArgs.get(0));</span>
+
+<span class="nc" id="L34">        System.out.println(draft);</span>
+<span class="nc" id="L35">        helper.chan.send(new Publish(user, draftTopic, draft));</span>
+<span class="nc" id="L36">    }</span>
 
     @Override
     public void execute(Client client) {
+<span class="nc" id="L40">        client.setStateMain();</span>
 
         try {
 
-<span class="nc" id="L38">            helper.chan.send(new Publish(client.getUser(), client.draftTopic, client.draftLines));</span>
+<span class="nc" id="L44">            helper.chan.send(new Publish(client.getUser(), client.draftTopic, client.draftLines));</span>
 
-<span class="nc" id="L40">        } catch (IOException ex) {</span>
-<span class="nc" id="L41">            Logger.getLogger(SendCommand.class.getName()).log(Level.SEVERE, null, ex);</span>
-<span class="nc" id="L42">        }</span>
+<span class="nc" id="L46">        } catch (IOException ex) {</span>
+<span class="nc" id="L47">            Logger.getLogger(SendCommand.class.getName()).log(Level.SEVERE, null, ex);</span>
+<span class="nc" id="L48">        }</span>
 
-<span class="nc" id="L44">        client.setStateMain();</span>
-<span class="nc" id="L45">        client.draftTopic = null;</span>
+<span class="nc" id="L50">        client.draftTopic = null;</span>
 
-<span class="nc" id="L47">    }</span>
+<span class="nc" id="L52">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>

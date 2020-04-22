@@ -1,6 +1,5 @@
 package mainPackage;
 
-
 import mainPackage.Client;
 
 /*
@@ -8,16 +7,12 @@ import mainPackage.Client;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author user1
  */
 public interface Command {
-    
-    public void execute (Client client);
-    
-    
-    
-}
 
+    public void execute(Client client);
+
+}

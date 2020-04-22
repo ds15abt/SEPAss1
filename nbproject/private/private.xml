@@ -4,13 +4,21 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Seeter/SEPAss1/test/mainPackage/ComposeBodyTest.java</file>
-            <file>file:/C:/Seeter/SEPAss1/test/mainPackage/ClientTest.java</file>
             <file>file:/C:/Seeter/SEPAss1/test/mainPackage/ComposeCommandTest.java</file>
+            <file>file:/C:/Seeter/SEPAss1/src/mainPackage/Command.java</file>
             <file>file:/C:/Seeter/SEPAss1/src/mainPackage/Client.java</file>
             <file>file:/C:/Seeter/SEPAss1/src/mainPackage/Parser.java</file>
-            <file>file:/C:/Seeter/SEPAss1/src/mainPackage/Controller.java</file>
             <file>file:/C:/Seeter/SEPAss1/src/mainPackage/CLFormatter.java</file>
+            <file>file:/C:/Seeter/SEPAss1/src/mainPackage/ListCommand.java</file>
             <file>file:/C:/Seeter/SEPAss1/src/mainPackage/BodyCommand.java</file>
+            <file>file:/C:/Seeter/SEPAss1/src/sep/seeter/net/message/Publish.java</file>
+            <file>file:/C:/Seeter/SEPAss1/src/sep/seeter/net/message/SeetsReply.java</file>
+            <file>file:/C:/Seeter/SEPAss1/src/mainPackage/Internationalisation.java</file>
+            <file>file:/C:/Seeter/SEPAss1/test/mainPackage/SendStateTest.java</file>
+            <file>file:/C:/Seeter/SEPAss1/src/sep/seeter/server/Server.java</file>
+            <file>file:/C:/Seeter/SEPAss1/src/mainPackage/Controller.java</file>
+            <file>file:/C:/Seeter/SEPAss1/src/mainPackage/ComposeCommand.java</file>
+            <file>file:/C:/Seeter/SEPAss1/src/mainPackage/DiscardCommand.java</file>
             <file>file:/C:/Seeter/SEPAss1/src/mainPackage/FetchCommand.java</file>
             <file>file:/C:/Seeter/SEPAss1/src/mainPackage/SendCommand.java</file>
         </group>

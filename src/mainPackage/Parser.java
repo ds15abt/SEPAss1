@@ -45,13 +45,16 @@ public class Parser {
     public Command get() throws IOException {
 
         switch (cmd) {
+
             case "exit":
                 return command = new ExitCommand();
 
             case "compose":
+
                 return command = new ComposeCommand(rawArgs);
 
             case "body":
+
                 return command = new BodyCommand(rawArgs);
 
             case "fetch":

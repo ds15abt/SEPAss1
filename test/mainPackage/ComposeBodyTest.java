@@ -8,6 +8,7 @@ import java.io.UnsupportedEncodingException;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -20,6 +21,8 @@ public class ComposeBodyTest {
     private ByteArrayOutputStream printed = new ByteArrayOutputStream();
     private ByteArrayInputStream in;
     private Controller controller;
+    private Client client;
+    private final PrintStream origOut = System.out;
 
     @BeforeClass
     public static void setUpClass() throws IOException {
@@ -36,37 +39,44 @@ public class ComposeBodyTest {
     public void setUp() {
         printed = new ByteArrayOutputStream();
         System.setOut(new PrintStream(printed));
-
     }
 
     @After
     public void tearDown() {
-
+        System.setOut(origOut);
     }
 
     private void inputMethod(String out) throws IOException {
         in = new ByteArrayInputStream(out.getBytes());
         System.setIn(in);
 
-        //Run the client
         String user = "Dylan";
-        String host = "localHost";
+        String host = "localhost";
         int port = Integer.parseInt("1234");
-        Client client = new Client(user, host, port);
+        client = new Client(user, host, port);
 
         Parser parser = new Parser(client);
         controller = new Controller(parser, client);
 
-        System.setOut(new PrintStream(printed));
+        controller.run();
+    }
+
+    @Test
+    public void TestBodyDrafting() throws IOException {
+
+        inputMethod("compose topic");
+
+        String expRes = "Drafting";
+
+        Assert.assertEquals(expRes, client.getState());
 
     }
 
     //REFERENCE TEST
     @Test
     public void TestBodyCommand() throws IOException {
-        inputMethod("compose topic\n"
-                + "body");
-        Assert.assertTrue(printed.toString().contains("Drafting: #topic"));
+        inputMethod("compose topic");
+        assertTrue(printed.toString().contains("\nDrafting: #topic"));
     }
 
 //    @Test

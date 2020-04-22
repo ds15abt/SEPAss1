@@ -102,12 +102,14 @@ public class Client {
     }
 
     public static void main(String[] args) throws IOException {
+
         String user = args[0];
         String host = args[1];
         int port = Integer.parseInt(args[2]);
         Client client = new Client(user, host, port);
         Parser parser = new Parser(client);
         Controller controller = new Controller(parser, client);
+
 //    client.set(user, host, port);
 //    client.run();
         controller.run();

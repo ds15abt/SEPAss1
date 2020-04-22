@@ -85,49 +85,55 @@ public class Client {
 
 <span class="nc" id="L86">    }</span>
 
-    public static void main(String[] args) throws IOException {
-<span class="nc" id="L89">        String user = args[0];</span>
-<span class="nc" id="L90">        String host = args[1];</span>
-<span class="nc" id="L91">        int port = Integer.parseInt(args[2]);</span>
-<span class="nc" id="L92">        Client client = new Client(user, host, port);</span>
-<span class="nc" id="L93">        Parser parser = new Parser(client);</span>
-<span class="nc" id="L94">        Controller controller = new Controller(parser, client);</span>
-//    client.set(user, host, port);
-//    client.run();
-<span class="nc" id="L97">        controller.run();</span>
-<span class="nc" id="L98">    }</span>
+    public String getUser() {
+<span class="nc" id="L89">        return user;</span>
+    }
 
+    public List getDraftLines() {
+<span class="nc" id="L93">        return draftLines;</span>
+    }
+
+    /**
+     *
+     * @return
+     */
     public String getDraftTopic() {
 <span class="nc" id="L101">        return draftTopic;</span>
     }
 
-//  public void setDraftTopic(){
-//      draftTopic= rawArgs[0];
-//      
-//  }
+    public static void main(String[] args) throws IOException {
+
+<span class="nc" id="L106">        String user = args[0];</span>
+<span class="nc" id="L107">        String host = args[1];</span>
+<span class="nc" id="L108">        int port = Integer.parseInt(args[2]);</span>
+<span class="nc" id="L109">        Client client = new Client(user, host, port);</span>
+<span class="nc" id="L110">        Parser parser = new Parser(client);</span>
+<span class="nc" id="L111">        Controller controller = new Controller(parser, client);</span>
+
+//    client.set(user, host, port);
+//    client.run();
+<span class="nc" id="L115">        controller.run();</span>
+<span class="nc" id="L116">    }</span>
+
     public void setStateDrafting() {
-<span class="nc" id="L109">        state = &quot;Drafting&quot;;</span>
-<span class="nc" id="L110">    }</span>
+<span class="nc" id="L119">        state = &quot;Drafting&quot;;</span>
+<span class="nc" id="L120">    }</span>
 
     public void setStateMain() {
-<span class="nc" id="L113">        state = &quot;Main&quot;;</span>
-<span class="nc" id="L114">    }</span>
+<span class="nc" id="L123">        state = &quot;Main&quot;;</span>
+<span class="nc" id="L124">    }</span>
 
     public String getState() {
 
-<span class="nc" id="L118">        return state;</span>
-    }
-
-    public String getUser() {
-<span class="nc" id="L122">        return user;</span>
+<span class="nc" id="L128">        return state;</span>
     }
 
     public String getHost() {
-<span class="nc" id="L126">        return host;</span>
+<span class="nc" id="L132">        return host;</span>
     }
 
     public int getPort() {
-<span class="nc" id="L130">        return port;</span>
+<span class="nc" id="L136">        return port;</span>
     }
 
 }

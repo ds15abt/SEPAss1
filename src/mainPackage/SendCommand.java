@@ -37,6 +37,7 @@ public class SendCommand implements Command {
 
     @Override
     public void execute(Client client) {
+        client.setStateMain();
 
         try {
 
@@ -46,7 +47,6 @@ public class SendCommand implements Command {
             Logger.getLogger(SendCommand.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        client.setStateMain();
         client.draftTopic = null;
 
     }
